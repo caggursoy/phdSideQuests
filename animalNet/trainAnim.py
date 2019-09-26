@@ -15,7 +15,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from keras.utils import to_categorical
 from keras.utils import plot_model
-from pyimagesearch.lenet import LeNet
+from model.arch import modelArch
 from imutils import paths
 import matplotlib.pyplot as plt
 import numpy as np
