@@ -36,10 +36,10 @@ args = vars(ap.parse_args())
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 500
-INIT_LR = 1e-3  #1e-3
-BS = 32
-trgIm = [60,60,3]
+EPOCHS = 100
+INIT_LR = 1e-4  #1e-3
+BS = 4096
+trgIm = [20,20,3]
 noClass = 10
 
 # initialize the data and labels
@@ -117,7 +117,7 @@ aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
 
 # initialize the model
 print("[INFO] compiling model...")
-model = LeNet.build(width=trgIm[0], height=trgIm[1], depth=trgIm[2], classes=noClass)
+model = modelArch.build(width=trgIm[0], height=trgIm[1], depth=trgIm[2], classes=noClass)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 model.compile(loss="categorical_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
