@@ -10,9 +10,11 @@ matplotlib.use("Agg")
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
 from keras.preprocessing.image import ImageDataGenerator
-from keras.optimizers import Adam
+# from keras.optimizers import Adam
+from keras.optimizers import SGD
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
+from sklearn.preprocessing import StandardScaler
 from keras.utils import to_categorical
 from keras.utils import plot_model
 from model.arch import modelArch
@@ -36,10 +38,10 @@ args = vars(ap.parse_args())
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 100
-INIT_LR = 1e-4  #1e-3
-BS = 4096
-trgIm = [20,20,3]
+EPOCHS = 10
+INIT_LR = 1e-3  #1e-3
+BS = 32
+trgIm = [30,30,3]
 noClass = 10
 
 # initialize the data and labels
@@ -86,11 +88,10 @@ for imagePath in imagePaths:
 	print('\t', round(100*idx/len(imagePaths),2) , '%...', end="\r")
 	idx=idx+1
 # scale the raw pixel intensities to the range [0, 1]
-data = np.array(data, dtype="float") / 255.0
-labels = np.array(labels)
 
-print(data.shape)
-print(labels.shape)
+# data = np.array(data, dtype="float") / 255.0
+data = np.array(data, dtype="float") / np.amax(data)
+labels = np.array(labels)
 
 # partition the data into training and testing splits using 60% of
 # the data for training and the remaining 20% for testing and 20% for validation
@@ -110,23 +111,26 @@ print("Training size: ",str(int(100*trainX.size/data.size)),"%")
 print("Test size: ",str(int(100*testX.size/data.size)),"%")
 print("Validation size: ",str(int(100*valX.size/data.size)),"%")
 
-# construct the image generator for data augmentation
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-	horizontal_flip=True, fill_mode="nearest")
+# # construct the image generator for data augmentation
+# aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
+# 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+# 	horizontal_flip=True, fill_mode="nearest")
 
 # initialize the model
 print("[INFO] compiling model...")
 model = modelArch.build(width=trgIm[0], height=trgIm[1], depth=trgIm[2], classes=noClass)
-opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
+# opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
+opt = SGD(lr=0.0001)
 model.compile(loss="categorical_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
 
 # train the network
 print("[INFO] training network...")
-H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-	validation_data=(valX, valY), steps_per_epoch=len(trainX) // BS,
-	epochs=EPOCHS, verbose=1, shuffle=True, max_queue_size=10)
+# H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
+# 	validation_data=(valX, valY), steps_per_epoch=len(trainX) // BS,
+# 	epochs=EPOCHS, verbose=1, shuffle=True, max_queue_size=10)
+H = model.fit(x=trainX, y=trainY, validation_data=(valX, valY), steps_per_epoch=None,
+	epochs=EPOCHS, verbose=1, shuffle=False)
 
 # save the model to disk
 print("[INFO] serializing network...")

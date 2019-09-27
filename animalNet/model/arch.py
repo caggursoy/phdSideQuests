@@ -22,12 +22,15 @@ class modelArch:
 		if K.image_data_format() == "channels_first":
 			inputShape = (depth, height, width)
 
-		model.add(Conv2D(50, (2,2), input_shape = inputShape))
+		model.add(Conv2D(20, (2,2), input_shape = inputShape))
+		model.add(Activation('relu'))
+		model.add(MaxPooling2D(pool_size = (2,2), strides = (2,2)))
+		model.add(Conv2D(100, (2,2), input_shape = inputShape))
 		model.add(Activation('relu'))
 		model.add(MaxPooling2D(pool_size = (2,2), strides = (2,2)))
 		model.add(Flatten())
 		model.add(Dense(classes))
-		model.add(Activation('softmax'))
+		model.add(Activation('sigmoid'))
 
 		return model
 
