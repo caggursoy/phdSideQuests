@@ -73,7 +73,7 @@ for imName in listIm:
   orig = image.copy()
 
   # pre-process the image for classification
-  image = cv2.resize(image, (30, 30)) # 28,28
+  image = cv2.resize(image, (30, 30)) # 30,30
   image = image.astype("float") / 255.0
   image = img_to_array(image)
   image = np.expand_dims(image, axis=0)
@@ -81,7 +81,7 @@ for imName in listIm:
   # load the trained convolutional neural network
   model = load_model(args["model"])
   # Save model img to file
-  plot_model(model, to_file= str(args["model"])[0:-6]+'.png')
+  plot_model(model, show_shapes=True, to_file= str(args["model"])[0:-6]+'.png')
 
   # classify the input image
   results = model.predict(image)[0]
@@ -146,8 +146,7 @@ def switch_label(argument):
 		6 : "horse",
 		7 : "sheep",
 		8 : "spider",
-		9 : "squirrel",
-        10 : "not known"
+		9 : "squirrel"
 	}
 	return switcher.get(argument)
 

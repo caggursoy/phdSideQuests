@@ -1,8 +1,8 @@
 # USAGE
 # python trainAnim.py --dataset images --model cae-model.model
 # import PlaidML first
-import plaidml.keras
-plaidml.keras.install_backend()
+# import plaidml.keras
+# plaidml.keras.install_backend()
 # set the matplotlib backend so figures can be saved in the background
 import matplotlib
 matplotlib.use("Agg")
@@ -38,7 +38,7 @@ args = vars(ap.parse_args())
 
 # initialize the number of epochs to train for, initial learning rate,
 # and batch size
-EPOCHS = 50
+EPOCHS = 100
 INIT_LR = 1e-3  #1e-3
 BS = 32
 trgIm = [75,75,3]
