@@ -28,7 +28,7 @@ import os
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-d", "--dataset", required=True,
+ap.add_argument("-d", "--dataset", default="images\\raw-img",
 	help="path to input dataset")
 ap.add_argument("-m", "--model", default="model0.model",
 	help="path to output model")
