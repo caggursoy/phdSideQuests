@@ -1,8 +1,4 @@
-# phdSideQuests
-## A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
+# fMRISim
+## This part of the repository is about [fmriSim](https://github.com/brainiak/brainiak/blob/master/brainiak/utils/fmrisim.py), [brainiak](https://github.com/brainiak/brainiak) and [Ellis' paper](https://www.biorxiv.org/content/10.1101/532424v2).
 
-### Chronicle
-
-The first quest I have encountered is [animalNet](https://github.com/caggursoy/phdSideQuests/tree/master/animalNet) where I will try to downscale the ANN I have used in my MSc project into a more compact and less deep-layered one.
-The plan is to make it distinguish between animals.
-For now I only have following animals' images in dataset: [ "butterfly", "cat", "chicken", "cow", "dog", "elephant", "horse", "sheep", "spider", "squirrel"]
+Details to follow
