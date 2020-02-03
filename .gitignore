@@ -218,5 +218,6 @@ vignettes/*.pdf
 
 ## Other ##
 .idea
+.nii
 
 # End of https://www.gitignore.io/api/r,python,images
