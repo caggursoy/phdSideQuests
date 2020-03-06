@@ -33,7 +33,7 @@ elif int(firstday) >= 10 and int(lastday) >= 10 and int(month1) < 10:
 
 fullPath = 'https://intranet.zi-mannheim.de/fileadmin/user_upload/cafeteria/Mittagessen/Cafeteria/'
 fullPath = fullPath + 'W' + str(wkNo) + '_Mittagessen_Cafeteria_vom' + dates + '.pdf'
-fullPathPdf =os.path.dirname(os.path.abspath(__file__)) + dates + '.pdf'
+fullPathPdf =os.path.dirname(os.path.abspath(__file__)) + '//' + dates + '.pdf'
 prompt1 = input('Do I need to download the file? Y/N...')
 if prompt1.lower() == 'Y'.lower():
     print('Beginning file download...')
@@ -68,3 +68,8 @@ def extract_text_from_pdf(pdf_path):
 ## Call function to extract text from pdf
 xText = extract_text_from_pdf(fullPathPdf)
 xTextList = re.split('□',xText)
+print(xTextList)
+
+datesStart = dates[1:dates.find("2020")+4] # find starting date of the week and extract it from dates
+datesEnd = dates[dates[dates.find("2020")+4:].find("2020")-10:dates[dates.find("2020")+4:].find("2020")] # find starting date of the week and extract it from dates
+print(datesStart, '\t', datesEnd)
