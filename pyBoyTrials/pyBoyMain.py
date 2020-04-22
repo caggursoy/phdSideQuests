@@ -18,40 +18,40 @@ if len(sys.argv) > 1:
 else:
     print("Usage: python mario_boiler_plate.py [ROM file]")
     exit(1)
-while(True): #added new
-    quiet = "--quiet" in sys.argv
-    pyboy = PyBoy(filename, window_type="headless" if quiet else "SDL2", window_scale=3, debug=not quiet, game_wrapper=True)
-    pyboy.set_emulation_speed(0)
-    assert pyboy.cartridge_title() == "SUPER MARIOLAN"
 
-    mario = pyboy.game_wrapper()
-    mario.start_game()
+quiet = "--quiet" in sys.argv
+pyboy = PyBoy(filename, window_type="headless" if quiet else "SDL2", window_scale=3, debug=not quiet, game_wrapper=True)
+pyboy.set_emulation_speed(.1)
+assert pyboy.cartridge_title() == "SUPER MARIOLAN"
 
-    assert mario.score == 0
-    assert mario.lives_left == 2
-    assert mario.time_left == 400
-    assert mario.world == (1, 1)
-    assert mario.fitness == 0 # A built-in fitness score for AI development
-    last_fitness = 0
+mario = pyboy.game_wrapper()
+mario.start_game()
 
-    print(mario)
+assert mario.score == 0
+assert mario.lives_left == 2
+assert mario.time_left == 400
+assert mario.world == (1, 1)
+assert mario.fitness == 0 # A built-in fitness score for AI development
+last_fitness = 0
 
-    pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
-    for _ in range(1000):
-        assert mario.fitness >= last_fitness
-        last_fitness = mario.fitness
+print(mario)
 
-        pyboy.tick()
-        if mario.lives_left == 1:
-            assert last_fitness == 27700
-            assert mario.fitness == 17700 # Loosing a live, means 10.000 points in this fitness scoring
-            print(mario)
-            break
-    else:
-        print("Mario didn't die?")
-        exit(2)
+pyboy.send_input(WindowEvent.PRESS_ARROW_RIGHT)
+for _ in range(1000):
+    assert mario.fitness >= last_fitness
+    last_fitness = mario.fitness
 
-    mario.reset_game()
-    assert mario.lives_left == 2
+    pyboy.tick()
+    if mario.lives_left == 1:
+        assert last_fitness == 27700
+        assert mario.fitness == 17700 # Loosing a live, means 10.000 points in this fitness scoring
+        print(mario)
+        break
+else:
+    print("Mario didn't die?")
+    exit(2)
 
-    pyboy.stop()
+mario.reset_game()
+assert mario.lives_left == 2
+
+pyboy.stop()
