@@ -30,12 +30,10 @@ finArr = pd.DataFrame(data=finArr)[0]
 
 #
 # normaliser(currData,finArr,a,b1,b2,b3)
-def gradDesc(X,Y):
-    m = 0
-    c = 0
-
-    L = 0.0001  # The learning Rate
-    epochs = 1000  # The number of iterations to perform gradient descent
+def gradDesc(X,Y,L=0.0001,epochs=1000):
+    m = 0; c = 0; err = abs(Y - X)
+    # L = 0.0001  # The learning Rate
+    # epochs = 1000  # The number of iterations to perform gradient descent
 
     n = float(len(X)) # Number of elements in X
 
@@ -44,26 +42,66 @@ def gradDesc(X,Y):
         Y_pred = m*X + c  # The current predicted value of Y
         D_m = (-2/n) * sum(X * (Y - Y_pred))  # Derivative wrt m
         D_c = (-2/n) * sum(Y - Y_pred)  # Derivative wrt c
-        m = m - L * D_m  # Update m
-        c = c - L * D_c  # Update c
-
-    # print (m, c)
-
+        print(D_m,np.isnan(D_m))
+        if np.isnan(D_m) or np.isnan(D_c):
+            m = m; c = c
+        else:
+            m = m - L * D_m  # Update m
+            c = c - L * D_c  # Update c
     # Making predictions
+    # print('m:',m,'c:',c)
     Y_pred = m*X + c
+    err = abs(Y_pred - X)
+    return X, Y_pred, err
 
-    # plt.scatter(X, Y)
-    # plt.plot([min(X), max(X)], [min(Y_pred), max(Y_pred)], color='red')  # regression line
-    # plt.show()
-    return X,Y_pred
-regX, regY = gradDesc(currData,finArr)
-# print(regX,'\n',regY)
+def months(argument):
+    switcher = {
+        "Jan":'1',
+        "Feb":'2',
+        "Mar":'3',
+        "Apr":'4',
+        "May":'5',
+        "Jun":'6',
+        "Jul":'7',
+        "Aug":'8',
+        "Sep":'9',
+        "Oct":'10',
+        "Nov":'11',
+        "Dec":'12'
+    }
+    return switcher.get(argument, "Invalid month")
 
-# for i in range(len(finArr)):
-#     print(finArr[i],currData[i])
-plt.plot(sales_data['Date'],regX,label='Actual')
-plt.plot(sales_data['Date'],regY,label='Predicted')
+def dateConv(data):
+    dates = []
+    for d in data:
+        x = d.split(',')
+        xx = x[0].split(' ')
+        xx.append(x[1])
+        xx[0] = months(xx[0])
+        outStr = xx[1]+' '+xx[0]+xx[2]
+        dates.append(outStr)
+    return(dates)
+outDates = dateConv(sales_data2['Date'])
+
+
+L=0.000001; epochs=1000
+regX, regY, err = gradDesc(currData,finArr,L=0.000001,epochs=1000)
+# print(np.isnan(err))
+while max(err) > 0.2 and L<1:
+    L = L*10; epochs = epochs*2
+    regX, regY, err = gradDesc(currData, finArr, L=L, epochs=epochs)
+    # print(max(err))
+
+print(regX)
+print(regY)
+
+for p in range(regXVal):
+    print(regXVal[p],regYVal[p])
+
+plt.plot(outDates,regX,label='Actual')
+plt.plot(outDates,regY,label='Predicted')
 plt.legend()
 plt.xticks(rotation=90)
-# plt.autoscale(enable=True)
+# plt.show()
+plt.autoscale(enable=True)
 plt.savefig('output2.png',dpi=1000)
