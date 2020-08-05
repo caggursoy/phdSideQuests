@@ -1,6 +1,8 @@
 # my lovely morning routine
 import shutil
 import os
+import subprocess
+import sys
 # remove spotify update folder
 if os.path.isdir('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update'):
     shutil.rmtree('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update')
@@ -15,3 +17,13 @@ for f in files:
         pathSource = root + '/' + f
         pathTarget = root + '/Shortcuts/' + f
         shutil.move(pathSource, pathTarget)
+
+# Start Spotify, path = C:\Local\Programs\Spotify\Spotify.exe // C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE
+cmdList = ['C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', 'C:\Local\Programs\Spotify\Spotify.exe']
+for cmd in cmdList:
+    proc = subprocess.Popen(cmd, shell=True)
+    try:
+        proc.wait(timeout=1)
+    except subprocess.TimeoutExpired:
+        # sys.exit()
+        continue
