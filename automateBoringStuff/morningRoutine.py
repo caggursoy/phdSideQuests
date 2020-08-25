@@ -13,7 +13,10 @@ for root, dirs, files in os.walk('//zisvfs12/Home/cagatay.guersoy/Desktop'):
     print('Cleaning my desktop')
     break
 for f in files:
-    if f is not 'desktop.ini':
+    if f == 'desktop.ini':
+        print('here')
+        continue
+    else:
         pathSource = root + '/' + f
         pathTarget = root + '/Shortcuts/' + f
         shutil.move(pathSource, pathTarget)
