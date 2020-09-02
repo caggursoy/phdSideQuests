@@ -3,6 +3,7 @@ import shutil
 import os
 import subprocess
 import sys
+import psutil
 # remove spotify update folder
 if os.path.isdir('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update'):
     shutil.rmtree('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update')
@@ -14,19 +15,29 @@ for root, dirs, files in os.walk('//zisvfs12/Home/cagatay.guersoy/Desktop'):
     break
 for f in files:
     if f == 'desktop.ini':
-        print('here')
         continue
     else:
         pathSource = root + '/' + f
         pathTarget = root + '/Shortcuts/' + f
         shutil.move(pathSource, pathTarget)
 
+# "someProgram" in (p.name() for p in psutil.process_iter()) Rocket.Chat.exe rstudio.exe Spotify.exe OUTLOOK.EXE
+progList = []
+for p in psutil.process_iter():
+    progList.append(p.name())
+
 # Start Spotify, path = C:\Local\Programs\Spotify\Spotify.exe // C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE
-cmdList = ['C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', 'C:\Local\Programs\Spotify\Spotify.exe']
+cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe',
+r'C:\Program Files\RStudio\\bin\\rstudio.exe', r'C:\Users\cagatay.guersoy\AppData\Local\Programs\Rocket.Chat\Rocket.Chat.exe']
+
 for cmd in cmdList:
-    proc = subprocess.Popen(cmd, shell=True)
-    try:
-        proc.wait(timeout=1)
-    except subprocess.TimeoutExpired:
-        # sys.exit()
+    cc = cmd[cmd.rfind('\\')+1:]
+    if cc not in progList:
+        proc = subprocess.Popen(cmd, shell=True)
+        try:
+                proc.wait(timeout=1)
+        except subprocess.TimeoutExpired:
+            # sys.exit()
+            continue
+    else:
         continue
