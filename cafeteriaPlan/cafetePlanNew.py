@@ -23,11 +23,12 @@ import platform
 firstday = input("Enter the first day of the week (1-31): ")
 month1 = input("Enter the month (numbers please!): ")
 lastday = input("Enter the last day of the week (1-31): ")
-month2 = input("Enter the month (numbers please!): ")
-# wkNo = datetime.date(2020, int(month1), int(firstday)).isocalendar()[1] - 5
-# dates = ''
-pdfStr =  'W4_Mittagessen_Cafeteria_vom_'+str(firstday)+'.'+(('0'+str(month1)) if int(month1)<10 else str(month1))+'.'+'2020'+'_bis_'+str(lastday)+'.'+(('0'+str(month2)) if int(month2)<10 else str(month2))+'.'+'2020.pdf'
-##
+month2 = input("Enter the month (two digit numbers please! (i.e. 05 or 18)): ")
+wkNo = datetime.date(2020, int(month1), int(firstday)).isocalendar()[1] - 35
+prefix = 'W'+str(wkNo)
+pdfStr =  prefix+'_Mittagessen_Cafeteria_vom_'+str(firstday)+'.'+(('0'+str(month1)) if int(month1)<10 else str(month1))+'.'+'2020'+'_bis_'+str(lastday)+'.'+(('0'+str(month2)) if int(month2)<10 else str(month2))+'.'+'2020.pdf'
+print(pdfStr)
+## clear function
 def clear():
     if platform.system() == 'Linux' or platform.system() == 'Darwin':
         os.system('clear')
@@ -84,7 +85,8 @@ def extract_text_from_pdf(pdf_path):
 
     if text:
         return text
-## Call function to extract text from pdf
+
+# Call function to extract text from pdf
 downloadFlag = input('Do I need to download the pdf? (Y/N)... ')
 if downloadFlag.lower() == 'y':
     downloadPdfIntranet()
