@@ -22,8 +22,8 @@ import platform
 ##
 firstday = input("Enter the first day of the week (1-31): ")
 month1 = input("Enter the month (numbers please!): ")
-lastday = input("Enter the last day of the week (1-31): ")
-month2 = input("Enter the month (two digit numbers please! (i.e. 05 or 18)): ")
+lastday = input("Enter the last day of the week (1-31)(two digit numbers please! (i.e. 05 or 18)): ")
+month2 = input("Enter the month (numbers please!): ")
 wkNo = datetime.date(2020, int(month1), int(firstday)).isocalendar()[1] - 35
 prefix = 'W'+str(wkNo)
 pdfStr =  prefix+'_Mittagessen_Cafeteria_vom_'+str(firstday)+'.'+(('0'+str(month1)) if int(month1)<10 else str(month1))+'.'+'2020'+'_bis_'+str(lastday)+'.'+(('0'+str(month2)) if int(month2)<10 else str(month2))+'.'+'2020.pdf'
