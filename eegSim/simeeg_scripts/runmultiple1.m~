@@ -1,0 +1,106 @@
+function runmultiple1;%(torun);
+%% Run on the simulated data.
+
+%% Check the ICA options within icatb_icaOptions. Sphering and bias should
+%% be on according to Srinivas and Rogers (so they take on the default). 
+
+thisdir=pwd;
+
+eegiftdir = '/export/mialab/users/dbridwell/spectral_ica_sim/ANALYSIS/EEGIFT/';
+
+for numc = [5 10 15 20];
+    
+for H = 2;%1:2; %1-Infomax, 2-others
+clear tg
+
+tg.lab{1} = {'mixmeth'};  % mixing method (see ss4_mix_sources.m)
+tg.val{1} = [1];
+
+tg.lab{2} = {'dur'};  % duration of window
+tg.val{2} = [750];
+
+tg.lab{3} = {'olap'};  % overlap
+tg.val{3} = [75];
+
+tg.lab{4} = {'thenoise'};  % variance of the noise is noise % of the median of the 3D data
+tg.val{4} = [1 5 10 15 20];
+
+tg.lab{5} = {'numcomp_2'};  % number of components  
+tg.val{5} = [numc]; 
+
+tg.lab{6} = {'numOfPC1'};
+tg.val{6} = [20]; %used 30 in previous studies (didn't work with high #'s, i.e. 128)
+
+tg.lab{7} = {'numOfPC2'}; %% values with 12 seemed to be unstable (in simulation with 5 sources)
+tg.val{7} = [numc]; %used 12 in previous studies (didn't like more than 100)
+
+tg.lab{8} = {'scaleType'}; %% 0 SEEMS TO BE THE BEST (2 IS THE SAME)
+tg.val{8} = [0]; %%0-dont' scale, %1-scale to data, 2-z-scores (eegift default) 3-normalize using maximum value (and multiple topos using max val)
+               %4-scale topographies using the max value and timecourses using sd of tc
+
+tg.lab{9} = {'preproc_opt'}; %% use log(abs) or log10(abs) results are comparable wrt average source correlations
+tg.val{9} = [3];            %% 1-abs()^2, 2-abs(), 3-log(abs) 4-log10(abs);
+
+tg.lab{10} = {'preproc_type'}; %% 1 SEEMS TO BE THE BEST
+tg.val{10} = [5]; % 1-remove mean per tp, 2-remove mean per voxel, 3-Intensity normalization, 4-variance normalization
+
+tg.lab{11} = {'algoType'}; %% 2 and 13 gave errors, 8 gets stalled sometimes
+if H==1;
+tg.val{11} = [1]; %% %% 1-'Infomax', 2-'Fast ICA', 3-'Erica', 4-'Simbec', 5-'Evd', 6-'Jade Opac', 7-'Amuse', 8-'SDD ICA', 9-'Radical ICA', 10-'Combi', 11-'ICA-EBM', 12-'FBSS', 13-'IVA-GL'  (see icatb_icaAlgorithm.m and icatb_icaOptions.m)
+elseif H==2;         %% 14-WASOBI (manually done by running with 10, adjusting the call in icatb_icaAlgorithm, and then changing the filenames so it doesnt' write over COMBI)
+tg.val{11} = 12;%[3 4 5 6 7 9 10 11 12]; %2 and 13 take long
+else;end;
+
+tg.lab{12} = {'backReconType'}; % dont use regular, it makes the individual sum to group, Srinivas says use str or gica
+tg.val{12} = [2]; %% 'Regular', 'Spatial-temporal regression', 'GICA3', 'GICA'
+
+tg.lab{13} = {'pcaType'}; %% keep as standard 
+tg.val{13} = [1]; %%'standard', 'expectation','svd'
+
+tg.lab{14} = {'reps'}; %% repetition number, how many times to repeat 
+tg.val{14} = [1]; %% [1 2 3 4 5 6 7 8 9 10]; 
+
+if length(tg.val{11})==1 & tg.val{11}(1)==1;
+tg.lab{15} = {'extended'};  
+tg.val{15} = [0 1 2]; %[0 1 2];
+
+tg.lab{16} = {'sphering'};  %% keep on
+tg.val{16} = [1]; %1-on 2-off
+
+tg.lab{17} = {'bias'};  %% keep on
+tg.val{17} = [1]; %1-on 2-off
+
+else;end;
+
+
+[tg tag] = expandtg(tg);  
+
+
+for H = 1:length(tag);
+
+%% check if it has been run on this tag   (move this part inside the functions in the future)
+datadir = [eegiftdir 'THEOUTPUT_' tag{H}];
+dircheck(datadir);
+%files=dir('EEGIFT_ica.mat');
+files=dir('ss6_eegift.mat');
+cd(thisdir);
+
+if length(files)==0
+eval(sprintf('disp(''running on %s'');',tag{H}));
+
+ss4_mix_sources(H,tg,tag);    
+ss5_eegift(H,tg,tag); %% run eegift
+ss6_eegift(H,tg,tag); %% visualize components (group) and match to sources
+
+elseif length(files)>0;
+eval(sprintf('disp(''skipping %s, already ran'');',tag{H}));   
+else;end;
+
+end;
+end;
+end;
+
+
+
+
+cd(thisdir);
