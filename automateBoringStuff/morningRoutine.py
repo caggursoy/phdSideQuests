@@ -27,7 +27,7 @@ for p in psutil.process_iter():
     progList.append(p.name())
 
 # Start Spotify, path = C:\Local\Programs\Spotify\Spotify.exe // C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE
-cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe',
+cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe', r'C:\Users\cagatay.guersoy\AppData\Local\atom\atom.exe',
 r'C:\Program Files\RStudio\\bin\\rstudio.exe', r'C:\Users\cagatay.guersoy\AppData\Local\Programs\Rocket.Chat\Rocket.Chat.exe',
 r'C:\Program Files (x86)\Zotero\zotero.exe',r'C:\Local\Programs\Telegram\Telegram.exe']
 
