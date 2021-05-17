@@ -19,7 +19,11 @@ for f in files:
     else:
         pathSource = root + '/' + f
         pathTarget = root + '/Shortcuts/' + f
-        shutil.move(pathSource, pathTarget)
+        try:
+            shutil.move(pathSource, pathTarget)
+        except shutil.SameFileError:
+            os.remove(pathTarget)
+            shutil.move(pathSource, pathTarget)
 
 # "someProgram" in (p.name() for p in psutil.process_iter()) Rocket.Chat.exe rstudio.exe Spotify.exe OUTLOOK.EXE
 progList = []
