@@ -7,6 +7,12 @@ import psutil
 # remove spotify update folder
 if os.path.isdir('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update'):
     shutil.rmtree('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update')
+if os.path.isdir('\\zisvfs12\\Home\\cagatay.guersoy\\AppData\\Roaming\\Spotify'):
+    try:
+        shutil.move('\\zisvfs12\\Home\\cagatay.guersoy\\AppData\\Roaming\\Spotify', 'C:\\Local\\Programs\\Spotify')
+    except shutil.SameFileError:
+        os.remove('C:\\Local\\Programs\\Spotify')
+        shutil.move('\\zisvfs12\\Home\\cagatay.guersoy\\AppData\\Roaming\\Spotify', 'C:\\Local\\Programs\\Spotify')
 print('Removed spotify update folder')
 # clean my desktop
 walk1 = os.walk('\\zisvfs12\\Home\\cagatay.guersoy\\Desktop')
@@ -31,9 +37,12 @@ for p in psutil.process_iter():
     progList.append(p.name())
 
 # Start Spotify, path = C:\Local\Programs\Spotify\Spotify.exe // C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE
-cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe', r'C:\Users\cagatay.guersoy\AppData\Local\atom\atom.exe',
-r'C:\Program Files\RStudio\\bin\\rstudio.exe', r'C:\Users\cagatay.guersoy\AppData\Local\Programs\Rocket.Chat\Rocket.Chat.exe',
-r'C:\Program Files (x86)\Zotero\zotero.exe',r'C:\Local\Programs\Telegram\Telegram.exe']
+# cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe', r'C:\Users\cagatay.guersoy\AppData\Local\atom\atom.exe',
+# r'C:\Program Files\RStudio\\bin\\rstudio.exe', r'C:\Users\cagatay.guersoy\AppData\Local\Programs\Rocket.Chat\Rocket.Chat.exe',
+# r'C:\Program Files (x86)\Zotero\zotero.exe',r'C:\Local\Programs\Telegram\Telegram.exe']
+
+cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe',
+r'C:\Users\cagatay.guersoy\AppData\Local\atom\atom.exe', r'C:\Program Files (x86)\Zotero\zotero.exe', r'C:\Local\Programs\Telegram\Telegram.exe']
 
 for cmd in cmdList:
     cc = cmd[cmd.rfind('\\')+1:]
