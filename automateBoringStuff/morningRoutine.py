@@ -42,7 +42,8 @@ for p in psutil.process_iter():
 # r'C:\Program Files (x86)\Zotero\zotero.exe',r'C:\Local\Programs\Telegram\Telegram.exe']
 
 cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe',
-r'C:\Users\cagatay.guersoy\AppData\Local\atom\atom.exe', r'C:\Program Files (x86)\Zotero\zotero.exe', r'C:\Local\Programs\Telegram\Telegram.exe']
+r'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Spyder.lnk', r'C:\Program Files (x86)\Zotero\zotero.exe',
+r'C:\Program Files\Nextcloud\nextcloud.exe', r'C:\Users\cagatay.guersoy\AppData\Local\slack\slack.exe', r'C:\Program Files\Google\Chrome\Application\chrome.exe']
 
 for cmd in cmdList:
     cc = cmd[cmd.rfind('\\')+1:]
