@@ -224,3 +224,7 @@ vignettes/*.pdf
 .DS_Store
 .json
 *.pickle
+*.json
+*.xml
+createHandwrite/summary/*
+createHandwrite/pretrained/*
