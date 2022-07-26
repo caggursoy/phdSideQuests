@@ -226,5 +226,7 @@ vignettes/*.pdf
 *.pickle
 *.json
 *.xml
+*.exe
+*.zip
 createHandwrite/summary/*
 createHandwrite/pretrained/*
