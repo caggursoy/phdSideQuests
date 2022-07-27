@@ -1,10 +1,15 @@
-# phdSideQuests
-## A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
+# ResManToGCal
+## A script for copying ResMan events into a given Google Calendar.
+### Requirements
+- A credentials.json file for GCal logic (send me an e-mail and I will provide it)
+- A user_creds.json file where you will store your ZI username, password and the link for your Google Calendar
 
-### Chronicle
+### Notes
+- Please let me know from which Google account you will use this, so that I can grant rights for that account.
 
-The first quest I have encountered is [animalNet](https://github.com/caggursoy/phdSideQuests/tree/master/animalNet) where I will try to downscale the ANN I have used in my MSc project into a more compact and less deep-layered one.
-The plan is to make it distinguish between animals.
-For now I only have following animals' images in dataset: [ "butterfly", "cat", "chicken", "cow", "dog", "elephant", "horse", "sheep", "spider", "squirrel"]
-
-The second quest is to adapt Ellis' fmriSim as per our fmri simulation needs. The repo is [here](https://github.com/caggursoy/phdSideQuests/tree/master/fmriSim).
+### References
+- Following scripts are taken from this [link](https://karenapp.io/articles/how-to-automate-google-calendar-with-python-using-the-calendar-api/)
+  - cal_setup.py
+  - list_calendars.py
+  - create_event.py
+- run_calendar.py is a newly created script that gets the event from ResMan and copies it to Google Calendar
