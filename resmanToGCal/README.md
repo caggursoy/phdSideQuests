@@ -3,6 +3,7 @@
 ### Requirements
 - A credentials.json file for GCal logic (send me an e-mail and I will provide it)
 - A user_creds.json file where you will store your ZI username, password and the link for your Google Calendar
+  - To get Google Calendar link, you can run list_calendars script, and it will display you all the calendars that you have in your GCal
 
 ### Notes
 - Please let me know from which Google account you will use this, so that I can grant rights for that account.
