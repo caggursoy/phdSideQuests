@@ -6,7 +6,6 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import time
-# from pushsafer import init, Client
 import os
 import platform
 from win32com.client import Dispatch
@@ -16,8 +15,8 @@ from zipfile import ZipFile
 import json
 import pandas as pd
 from datetime import datetime, timedelta
-from create_event import create_event
-from cal_setup import get_calendar_service
+from functions import create_event, get_calendar_service
+# from cal_setup import get_calendar_service
 # Double function, gets/returns the platform type and clears the terminal screen
 def clear():
     if platform.system() == 'Linux':
@@ -50,6 +49,7 @@ if not os.path.isfile(str(Path.cwd() / 'chromedriver.exe')):
     with ZipFile('zipped.zip', 'r') as zipObj:
        # Extract all the contents of zip file in current directory
        zipObj.extractall()
+    os.remove('./zipped.zip')
 else:
     print('You already have the chromedriver')
 # Chromedriver binary location logic. For Windows rather easy, for Unix the users needs to input the path
@@ -99,3 +99,5 @@ for ind in df_filtered.index:
         create_event(ptcp_no, combtime_start, combtime_end, str(cred_data['calendarID'][0]))
     else:
         print('An event for participant ', ptcp_no, ' already exists')
+# Quit chrome window after run
+driver.quit()
