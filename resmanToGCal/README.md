@@ -8,8 +8,19 @@
 ### Notes
 - Please let me know from which Google account you will use this, so that I can grant rights for that account.
 
+### Creating json files
+- Template for user_creds.json:
+```
+  {
+      "users": ["user.name"],
+      "passwords": ["password"],
+      "calendarID" : ["linkToGoogleCalendar"]
+  }
+```
+- For credentials.json please contact me :)
+
 ### References
-- Following scripts are taken from this [link](https://karenapp.io/articles/how-to-automate-google-calendar-with-python-using-the-calendar-api/)
+- Following scripts and functions are taken from this [link](https://karenapp.io/articles/how-to-automate-google-calendar-with-python-using-the-calendar-api/)
   - cal_setup.py
   - list_calendars.py
   - create_event.py
