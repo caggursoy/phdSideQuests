@@ -15,7 +15,7 @@ from zipfile import ZipFile
 import json
 import pandas as pd
 from datetime import datetime, timedelta
-from functions import create_event, get_calendar_service
+from functions import create_event, get_calendar_service, prereqs
 # from cal_setup import get_calendar_service
 # Double function, gets/returns the platform type and clears the terminal screen
 def clear():
@@ -36,6 +36,8 @@ def get_version_via_com(filename):
     except Exception:
         return None
     return version
+# Run prereqs function to handle ZI SSL logic
+prereqs()
 # Get Google Chrome version and download the required chromedriver
 os_name = clear()
 if __name__ == "__main__":
@@ -81,7 +83,7 @@ for event in events['items']:
     ptcp_list.append(event['summary'])
 # Find the table and pass to a pandas dataframe
 tbl = driver.find_element("xpath", "/html/body/main/div[1]/div[2]/div[9]/div[1]/table").get_attribute('outerHTML')
-df  = pd.read_html(tbl)
+df = pd.read_html(tbl)
 df = df[0]
 # filter the dataframe to match the desired constraints
 ## needs to be polished
