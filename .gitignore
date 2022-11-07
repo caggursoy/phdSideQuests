@@ -232,3 +232,5 @@ createHandwrite/summary/*
 createHandwrite/pretrained/*
 *.cer
 *.crt
+/labmeeting-rocketchat/*.txt
+/labmeeting-rocketchat/*.pkl
