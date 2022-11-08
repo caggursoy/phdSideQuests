@@ -38,7 +38,13 @@ while True:
         main_table['msg_sent'] = [0]*len(main_table.index)
     msg_pres = 'Hi! This is a kind reminder that you are next in line to present on '
     msg_mod = 'Hi! This is a kind reminder that you are next in line to moderate on '
-    # print(main_table)
+    # print the table on labmeeting schedule channel
+    # if only there is an update
+    # get last message on Labmeeting Schedule channel
+    lastm_text = dict(dict(rocket.rooms_info(room_id='MErEiyArfmSRjWZS3').json())['room'])['lastMessage']
+    if 'update schedule' in lastm_text['msg'] or 'new schedule' in lastm_text['msg'] or 'updated schedule' in lastm_text['msg']:
+        print_table = main_table[['date','presenting','moderating']]
+        rocket.chat_post_message(f'```\n{print_table}\n```', channel='MErEiyArfmSRjWZS3')
     # get todays date
     todays_date = datetime.today().strftime('%Y-%m-%d')
     # loop over dataframe / not a good practice but this is the easiest method for now
@@ -52,8 +58,8 @@ while True:
              diff_day =  datetime.strptime(date, '%Y-%m-%d') - datetime.strptime(todays_date, '%Y-%m-%d')
              if diff_day.days <= 7 and diff_day.days > 0 and main_table['msg_sent'][i] == 0:
                  print('I have messaged', lab_roster[pres], 'and', lab_roster[mod])
-                 rocket.chat_post_message(msg_pres, channel='@'+lab_roster[pres])
-                 rocket.chat_post_message(msg_mod, channel='@'+lab_roster[mod])
+                 rocket.chat_post_message(msg_pres+date, channel='@'+lab_roster[pres])
+                 rocket.chat_post_message(msg_mod+date, channel='@'+lab_roster[mod])
                  main_table['msg_sent'][i] = 1
     # time to save the table
     main_table.to_pickle('main_table.pkl')
