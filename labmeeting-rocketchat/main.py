@@ -51,9 +51,9 @@ while True:
          else:
              diff_day =  datetime.strptime(date, '%Y-%m-%d') - datetime.strptime(todays_date, '%Y-%m-%d')
              if diff_day.days <= 7 and diff_day.days > 0 and main_table['msg_sent'][i] == 0:
-                 print('I need to message', lab_roster[pres], 'and', lab_roster[mod])
-                 # rocket.chat_post_message(msg_pres, channel='@'+lab_roster[pres])
-                 # rocket.chat_post_message(msg_mod, channel='@'+lab_roster[mod])
+                 print('I have messaged', lab_roster[pres], 'and', lab_roster[mod])
+                 rocket.chat_post_message(msg_pres, channel='@'+lab_roster[pres])
+                 rocket.chat_post_message(msg_mod, channel='@'+lab_roster[mod])
                  main_table['msg_sent'][i] = 1
     # time to save the table
     main_table.to_pickle('main_table.pkl')
