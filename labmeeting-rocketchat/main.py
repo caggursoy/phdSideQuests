@@ -63,4 +63,5 @@ while True:
                  main_table['msg_sent'][i] = 1
     # time to save the table
     main_table.to_pickle('main_table.pkl')
-    time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # 604800 for a week in seconds
+    # time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # 604800 for a week in seconds
+    time.sleep(604800.0 - ((time.time() - starttime) % 604800.0)) # 604800 for a week in seconds
