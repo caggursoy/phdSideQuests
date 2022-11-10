@@ -234,3 +234,6 @@ createHandwrite/pretrained/*
 *.crt
 /labmeeting-rocketchat/*.txt
 /labmeeting-rocketchat/*.pkl
+/resmanToGCal/archive/*.json
+/resmanToGCal/archive/*.crt
+/resmanToGCal/archive/*.exe
