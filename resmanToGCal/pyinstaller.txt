@@ -1,0 +1,9 @@
+main task:
+
+pyinstaller --noconfirm --onefile --console --add-data "./functions.py;." --add-data "./pyinstaller/freetype.dll;." "./main.py"
+
+pyinstaller --noconfirm --onefile --console --add-data "./functions.py;." --add-data "./credentials.json;." "./main.py"
+
+pyinstaller --noconfirm --onefile --console "./morningRoutine.py"
+
+pyinstaller --noconfirm --onefile --console "./main.py"
