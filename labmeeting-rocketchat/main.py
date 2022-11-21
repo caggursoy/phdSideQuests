@@ -34,8 +34,8 @@ ids = ['Peter.Kirsch','Ellen.Schmucker','Gordon.Feld','Martin.Gerchen','Vera.Zam
 lab_roster = dict(zip(names, ids))
 # start the infinite loop now
 starttime = time.time() # get current time
-try:
-    while True:
+while True:
+    try:
         # define the table or just load it
         if os.path.exists('main_table.pkl'):
             main_table = pd.read_pickle('main_table.pkl')
@@ -73,6 +73,6 @@ try:
         main_table.to_pickle('main_table.pkl')
         # time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # 604800 for a week in seconds
         time.sleep(604800.0 - ((time.time() - starttime) % 604800.0)) # 604800 for a week in seconds
-    except :
+    except:
         msg = 'There is a problem with the Labschedule code'
         pn.send_notification(msg, url='', silent=False, devices=['XoJV'])
