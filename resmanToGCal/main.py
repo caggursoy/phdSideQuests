@@ -5,7 +5,7 @@ from datetime import datetime
 
 # define main
 def main():
-    gcal = GoogleCalendar('caggursoy93@gmail.com') # set the gcal
+    gcal = GoogleCalendar('caggursoy93@gmail.com', credentials_path = './credentials.json') # set the gcal
     gcal_events =[] # allocate empty list for gcal events
     for g_ev in gcal: # in a loop save every event to a list
         gcal_events.append(str(g_ev)) # in string format
