@@ -12,10 +12,10 @@ with open('secrets.txt') as f:
     rocket_user_id = lines[1][lines[1].find(':')+1:].strip('\n')
     rocket_auth_token = lines[2][lines[2].find(':')+1:].strip('\n')
     rocket_server_url = lines[3][lines[3].find(':')+1:].strip('\n')
-    pushnotifier_username = '' # to be committed
-    pushnotifier_password = '' # to be committed
-    pushnotifier_package_name = '' # to be committed
-    pushnotifier_api_token = '' # to be committed
+    pushnotifier_username = lines[4][lines[4].find(':')+1:].strip('\n') # to be committed
+    pushnotifier_password = lines[5][lines[5].find(':')+1:].strip('\n') # to be committed
+    pushnotifier_package_name = lines[6][lines[6].find(':')+1:].strip('\n') # to be committed
+    pushnotifier_api_token = lines[7][lines[7].find(':')+1:].strip('\n') # to be committed
 # init github
 g = Github(token)
 repo = g.get_repo('CIMH-Clinical-Psychology/labmeeting')
@@ -34,7 +34,8 @@ ids = ['Peter.Kirsch','Ellen.Schmucker','Gordon.Feld','Martin.Gerchen','Vera.Zam
 lab_roster = dict(zip(names, ids))
 # start the infinite loop now
 starttime = time.time() # get current time
-while True:
+# while True:
+for _ in range(5):
     try:
         # define the table or just load it
         if os.path.exists('main_table.pkl'):
@@ -71,8 +72,8 @@ while True:
                      main_table['msg_sent'][i] = 1
         # time to save the table
         main_table.to_pickle('main_table.pkl')
-        # time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # 604800 for a week in seconds
-        time.sleep(604800.0 - ((time.time() - starttime) % 604800.0)) # 604800 for a week in seconds
+        time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # test 1 min
+        # time.sleep(604800.0 - ((time.time() - starttime) % 604800.0)) # 604800 for a week in seconds
     except:
         msg = 'There is a problem with the Labschedule code'
         pn.send_notification(msg, url='', silent=False, devices=['XoJV'])
