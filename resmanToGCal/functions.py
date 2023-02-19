@@ -87,7 +87,6 @@ def prereqs(): # prerequisites, eg. ZI certificate controls
         cert1_file = f1.read()
     with open('./ZI-ZICERT1-CA.crt') as f2:
         cert2_file = f2.read()
-
     if cert1_file in certf_file and cert2_file in certf_file:
         print('ZI certificates are already installed')
     else:

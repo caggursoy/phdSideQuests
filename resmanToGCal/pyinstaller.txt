@@ -6,4 +6,4 @@ pyinstaller --noconfirm --onefile --console --add-data "./functions.py;." --add-
 
 pyinstaller --noconfirm --onefile --console "./morningRoutine.py"
 
-pyinstaller --noconfirm --onefile --console "./main.py"
+pyinstaller --noconfirm --onefile --console --add-data "./credentials.json;." "./main.py"
