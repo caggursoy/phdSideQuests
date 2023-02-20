@@ -22,6 +22,11 @@ def main():
     repo = g.get_repo('CIMH-Clinical-Psychology/labmeeting')
     contents = repo.get_contents('README.md')
     all_contents = contents.decoded_content.decode()
+    beg = all_contents.find('## Current Schedule') + len('## Current Schedule')
+    end = all_contents.find('## Past Presentations')
+    dwn_table = pd.read_html(all_contents[beg:end])[0]
+    dwn_table.drop(dwn_table[dwn_table['date'] < datetime.today().strftime('%Y-%m-%d')].index, inplace=True)
+    dwn_table.reset_index(drop=True, inplace=True)
     # init rocketchat
     rocket = RocketChat(user_id=rocket_user_id,
                         auth_token=rocket_auth_token,
@@ -41,6 +46,16 @@ def main():
             # define the table or just load it
             if os.path.exists('main_table.pkl'):
                 main_table = pd.read_pickle('main_table.pkl')
+                print('saved table exists')
+                main_table.drop(main_table[main_table['date'] < datetime.today().strftime('%Y-%m-%d')].index, inplace=True)
+                main_table.reset_index(drop=True, inplace=True)
+                diff_table = main_table[['date','presenting','moderating']].compare(dwn_table)
+                print(main_table)
+                if not diff_table.empty:
+                    for ind in diff_table.index.values:
+                        print(ind, list(dwn_table.iloc[ind]))
+                        main_table.loc[ind, ['date','presenting','moderating','msg_sent']] = list(dwn_table.iloc[ind]).append[0]
+                    print(main_table)
             else:
                 beg = all_contents.find('## Current Schedule') + len('## Current Schedule')
                 end = all_contents.find('## Past Presentations')
@@ -52,7 +67,8 @@ def main():
             # if only there is an update
             # get last message on Labmeeting Schedule channel
             lastm_text = dict(dict(rocket.rooms_info(room_id='MErEiyArfmSRjWZS3').json())['room'])['lastMessage']
-            if 'update schedule' in lastm_text['msg'] or 'new schedule' in lastm_text['msg'] or 'updated schedule' in lastm_text['msg']:
+            # print(main_table[['date','presenting','moderating']])
+            if 'update schedule' in lastm_text['msg'].lower() or 'new schedule' in lastm_text['msg'].lower() or 'updated schedule' in lastm_text['msg'].lower() or 'switch' in lastm_text['msg'].lower():
                 print_table = main_table[['date','presenting','moderating']]
                 rocket.chat_post_message(f'```\n{print_table}\n```', channel='MErEiyArfmSRjWZS3')
             # get todays date
@@ -77,9 +93,10 @@ def main():
             main_table.to_pickle('main_table.pkl')
             # time.sleep(60.0 - ((time.time() - starttime) % 60.0)) # test 1 min
             # time.sleep(604800.0 - ((time.time() - starttime) % 604800.0)) # 604800 for a week in seconds
-        except:
+        except exp:
             msg = 'There is a problem with the Labschedule code'
             push_n.send_notification(msg, url='', silent=False, devices=['XoJV'])
+            print(exp)
 
 if __name__ == '__main__':
     main()
