@@ -1,9 +1,10 @@
 # my lovely morning routine
 import shutil
-import os
+import os, glob
 import subprocess
 import sys
 import psutil
+from pathlib import Path
 # remove spotify update folder
 if os.path.isdir('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update'):
     shutil.rmtree('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Spotify\\Update')
@@ -41,8 +42,14 @@ for p in psutil.process_iter():
 # r'C:\Program Files\RStudio\\bin\\rstudio.exe', r'C:\Users\cagatay.guersoy\AppData\Local\Programs\Rocket.Chat\Rocket.Chat.exe',
 # r'C:\Program Files (x86)\Zotero\zotero.exe',r'C:\Local\Programs\Telegram\Telegram.exe']
 
-cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe', r'C:\Program Files (x86)\Zotero\zotero.exe',
-r'C:\Program Files\Nextcloud\nextcloud.exe', r'C:\Users\cagatay.guersoy\AppData\Local\slack\slack.exe', r'C:\Program Files\Google\Chrome\Application\chrome.exe']
+
+
+discord_path = glob.glob(str(Path('C:\\Users\\cagatay.guersoy\\AppData\\Local\\Discord') / '**/Discord.exe'), recursive=True)[0]
+
+cmdList = [r'C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE', r'C:\Local\Programs\Spotify\Spotify.exe',
+r'C:\Program Files\Nextcloud\nextcloud.exe', r'C:\Users\cagatay.guersoy\AppData\Local\slack\slack.exe', 
+r'C:\Program Files\Google\Chrome\Application\chrome.exe', r'C:\Program Files (x86)\Zotero\zotero.exe',
+r'C:\Users\cagatay.guersoy\AppData\Local\Discord\Update.exe --processStart Discord.exe']
 
 for cmd in cmdList:
     cc = cmd[cmd.rfind('\\')+1:]
