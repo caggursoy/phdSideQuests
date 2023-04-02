@@ -4,29 +4,41 @@ from gcsa.event import Event
 from datetime import datetime, timezone, timedelta
 import pytz
 from tzlocal import get_localzone # $ pip install tzlocal
+import ssl
 
+ssl._create_default_https_context = ssl._create_unverified_context
 # define main
 def main():
+    cal_id = '478715c1c8c16ec8fdffbb269c7b840d7cf381ef68d332bfc46985278ff66f54@group.calendar.google.com'
     try:
-        gcal = GoogleCalendar('caggursoy93@gmail.com', credentials_path = './credentials.json') # set the gcal
+        gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # set the gcal
     except Exception as e:
         if os.path.isfile('token.pickle'):
             os.remove('token.pickle') # remove the pickle file
-            gcal = GoogleCalendar('caggursoy93@gmail.com', credentials_path = './credentials.json') # try to set the gcal again
+            gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # try to set the gcal again
         else:
             print(e)
     gcal_events = [] # allocate empty list for gcal events
+    resman_events = []
     for g_ev in gcal: # in a loop save every event to a list
         gcal_events.append(g_ev)
-    username = 'cagatay.guersoy' # ZI username / make it GUI in the future
-    resman_events = cal_downloader(username) # download the calendar and get necessary info
-    cal_merger(resman_events, gcal_events, gcal)
+    username = ['cagatay.guersoy', 'leonie.bonn'] # ZI username / make it GUI in the future
+    if len(username) > 1:
+        for user in username:
+            resman_event = cal_downloader(user) # download the calendar and get necessary info
+            [resman_events.append(resev) for resev in resman_event]
+        cal_merger(resman_events, gcal_events, gcal)
+    else:
+        resman_events = cal_downloader(username[0]) # download the calendar and get necessary info
+        cal_merger(resman_events, gcal_events, gcal)
 
 # define ZI calendar downloader
 def cal_downloader(username):
     url = 'http://resman.zi.local/iCal/general?contact.email=' + username + '@zi-mannheim.de' # ResMan calendar url, for now just email
+    # url = 'https://resman-dev/iCal/general?contact.email=' + username + '@zi-mannheim.de&includeMTA' # ResMan calendar url, for now just email
     filename = username+'_calendar.ics' # meaningful filename
     urllib.request.urlretrieve(url, filename) # download the calendar file
+    # urllib.request.urlretrieve('https://resman-dev/iCal/MTAroster/Heinz', 'mta_cal.ics')
     ics_data = open(filename).read() # read the calendar data
     resman_events = [] # resman list with event format
     for cal in vobject.readComponents(ics_data): # now read calendar events with using vobject functions
@@ -59,3 +71,10 @@ def cal_merger(res_cal, gcal_list, gcal): # new merger function
 # run main
 if __name__ == "__main__":
     main()
+
+
+# for cal in vobject.readComponents(ics_data_mta): # now read calendar events with using vobject functions
+#     for component in cal.components(): # get every calendar event's component
+#         if component.name == 'VEVENT': # calendar logic
+#             desc = component.description.valueRepr() # description of the event (ptcp no)
+#             print(desc)
