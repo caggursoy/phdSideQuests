@@ -19,7 +19,7 @@ from docx import Document
 
 # define main
 def main():
-    del_flag = False
+    del_flag = True
     print('Running program')
     gcal = conf_gcal()
     print('Connected to the Google Calendar successfully...')
@@ -153,9 +153,13 @@ def read_and_create(calendar):
     # Now compare and add events
     gcal_events = []
     for g_ev in calendar:
-        gcal_events.append(g_ev.summary)
-    for ev in set(gcal_events).difference(set([ev_list.summary for ev_list in event_list])):
-        calendar.add_event(ev)
+        gcal_events.append(g_ev)
+    # print('Existing:',gcal_events)
+    # print('New:',event_list)
+    # print(set([ev_list.summary for ev_list in event_list]).difference(set([gcal_ev.summary for gcal_ev in gcal_events])))
+    for ev in set([ev_list.summary for ev_list in event_list]).difference(set([gcal_ev.summary for gcal_ev in gcal_events])):
+        # calendar.add_event(ev_list[ev_list.index(ev)])
+        calendar.add_event(event_list[[ev_list.summary for ev_list in event_list].index(ev)])
                             
                             
     # print(event_list, len(event_list))
