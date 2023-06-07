@@ -237,3 +237,5 @@ createHandwrite/pretrained/*
 /resmanToGCal/archive/*.json
 /resmanToGCal/archive/*.crt
 /resmanToGCal/archive/*.exe
+/pug23Cal/*.docx
+/pug23Cal/*.pdf
