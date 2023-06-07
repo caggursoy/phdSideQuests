@@ -1,15 +1,29 @@
-import urllib.request, vobject, os
+import urllib.request, vobject, os, json
 from gcsa.google_calendar import GoogleCalendar
 from gcsa.event import Event
 from datetime import datetime, timezone, timedelta
 import pytz
 from tzlocal import get_localzone # $ pip install tzlocal
 import ssl
+from O365 import Account, MSGraphProtocol
 
-ssl._create_default_https_context = ssl._create_unverified_context
+# ssl._create_default_https_context = ssl._create_unverified_context
 # define main
 def main():
     cal_id = '478715c1c8c16ec8fdffbb269c7b840d7cf381ef68d332bfc46985278ff66f54@group.calendar.google.com'
+    # initialise microsoft stuff
+    with open('./credentials.json', 'r') as f:
+        credentials_data = json.load(f)
+    micro_client_id = credentials_data['installed']['microsoft_client_id']
+    micro_secret_id = credentials_data['installed']['microsoft_secret_id']
+    micro_credentials = (micro_client_id, micro_secret_id)
+    protocol = MSGraphProtocol() 
+    #protocol = MSGraphProtocol(defualt_resource='<sharedcalendar@domain.com>') 
+    scopes = ['Calendars.Read.Shared']
+    account = Account(micro_credentials, protocol=protocol)
+    if account.authenticate(scopes=scopes):
+        print('MS Authenticated!')
+    # run the gcal package
     try:
         gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # set the gcal
     except Exception as e:
@@ -45,12 +59,13 @@ def cal_downloader(username):
         for component in cal.components(): # get every calendar event's component
             if component.name == 'VEVENT': # calendar logic
                 desc = component.description.valueRepr() # description of the event (ptcp no)
+                # print(desc, component.dtstart.valueRepr().replace(tzinfo=get_localzone()))
                 subj_no = desc[desc.find('Subject:')+len('Subject:')+1:] # extract participant no
                 if (datetime.today().replace(tzinfo=get_localzone()) - component.dtstart.valueRepr()).days < 0: # as Markus Sack said, Don't bother with the past. Look ahead!
                     curr_ev = Event(
                     subj_no,
-                    start = timedelta(hours=1)+component.dtstart.valueRepr().replace(tzinfo=get_localzone()),
-                    end = timedelta(hours=1)+component.dtend.valueRepr().replace(tzinfo=get_localzone()),
+                    start = timedelta(hours=2)+component.dtstart.valueRepr().replace(tzinfo=get_localzone()),
+                    end = timedelta(hours=2)+component.dtend.valueRepr().replace(tzinfo=get_localzone()),
                     location = component.location.valueRepr(),
                     minutes_before_popup_reminder = 30,
                     )
@@ -61,6 +76,8 @@ def cal_downloader(username):
 def cal_merger(res_cal, gcal_list, gcal): # new merger function
     res_cal_list = [str(x) for x in res_cal]
     gcal_ev_list = [str(x) for x in gcal_list]
+    # print(res_cal_list, '\n\n\n', gcal_ev_list)
+    # print(set(res_cal_list).difference(set(gcal_ev_list)))
     for ev in set(res_cal_list).difference(set(gcal_ev_list)):
         if 'TEDDS_OCRT' in ev: # if event is in ResMan but not in GCal
             gcal.add_event(res_cal[res_cal_list.index(ev)]) # add to GCal
