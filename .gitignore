@@ -239,3 +239,4 @@ createHandwrite/pretrained/*
 /resmanToGCal/archive/*.exe
 /pug23Cal/*.docx
 /pug23Cal/*.pdf
+labmeeting-protocol/secrets.txt
