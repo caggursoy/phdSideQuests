@@ -241,3 +241,4 @@ createHandwrite/pretrained/*
 /pug23Cal/*.pdf
 labmeeting-protocol/secrets.txt
 rocket-greeter/bot2.py
+rocket-greeter/secrets.txt
