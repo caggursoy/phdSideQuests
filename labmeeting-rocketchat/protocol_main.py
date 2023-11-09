@@ -7,6 +7,7 @@ Created on Tue Aug 29 20:37:44 2023
 """
 import glob, os
 from pathlib import Path
+from inspect import currentframe, getframeinfo
 import docx
 from datetime import datetime
 import pandas as pd
@@ -17,8 +18,10 @@ import imgbbpy
 ##
 file_location = '/zi/flstorage/Klinische_Psychologie/Projekte/Lab Meeting Protokolle/'
 protocols = glob.glob(str(Path(file_location) / '*.docx'))
+filename = getframeinfo(currentframe()).filename
+parent = Path(filename).resolve().parent
 # get secrets
-with open('secrets.txt') as f:
+with open(str(parent / 'secrets.txt')) as f:
     lines = f.readlines()
     token = lines[0][lines[0].find(':')+1:].strip('\n')
     rocket_user_id = lines[1][lines[1].find(':')+1:].strip('\n')
@@ -78,7 +81,7 @@ for protocol in protocols:
                 pix.save(val)
                 upload = imgbb_client.upload(file=val, expiration=60*60*24*31)
                 # print(upload.url)
-                rocket.chat_post_message('Here\'s the png version of the protocol for convenience', channel='64ef390ba7410e24a50c8fbe', attachments=[{"image_url": upload.url}])    
+                rocket.chat_post_message('Here\'s the png version of the protocol for convenience', channel='64ef390ba7410e24a50c8fbe', attachments=[{"image_url": upload.url}])
                 os.remove(val) # remove the png files
             doc.close()
             # now remove the pdf files
