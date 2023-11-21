@@ -3,20 +3,23 @@ import pandas as pd
 from datetime import datetime
 from rocketchat_API.rocketchat import RocketChat
 from requests import sessions
+from inspect import currentframe, getframeinfo
 import os, time
 from pathlib import Path
-from pushnotifier import PushNotifier as pn
+# from pushnotifier import PushNotifier as pn
 # get secrets
-with open(Path(__file__).parent.absolute() / 'secrets.txt') as f:
+filename = getframeinfo(currentframe()).filename
+parent = Path(filename).resolve().parent
+with open(str(parent / 'secrets.txt')) as f:
     lines = f.readlines()
     token = lines[0][lines[0].find(':')+1:].strip('\n')
     rocket_user_id = lines[1][lines[1].find(':')+1:].strip('\n')
     rocket_auth_token = lines[2][lines[2].find(':')+1:].strip('\n')
     rocket_server_url = lines[3][lines[3].find(':')+1:].strip('\n')
-    pushnotifier_username = lines[4][lines[4].find(':')+1:].strip('\n') # to be committed
-    pushnotifier_password = lines[5][lines[5].find(':')+1:].strip('\n') # to be committed
-    pushnotifier_package_name = lines[6][lines[6].find(':')+1:].strip('\n') # to be committed
-    pushnotifier_api_token = lines[7][lines[7].find(':')+1:].strip('\n') # to be committed
+    # pushnotifier_username = lines[4][lines[4].find(':')+1:].strip('\n') # to be committed
+    # pushnotifier_password = lines[5][lines[5].find(':')+1:].strip('\n') # to be committed
+    # pushnotifier_package_name = lines[6][lines[6].find(':')+1:].strip('\n') # to be committed
+    # pushnotifier_api_token = lines[7][lines[7].find(':')+1:].strip('\n') # to be committed
 # init github
 g = Github(token)
 repo = g.get_repo('CIMH-Clinical-Psychology/labmeeting')
@@ -27,8 +30,8 @@ rocket = RocketChat(user_id=rocket_user_id,
                     auth_token=rocket_auth_token,
                     server_url=rocket_server_url)
 # print(rocket.chat_post_message('Its on!', channel='@rocket.cat').json())
-# init pushnotifier
-pn = pn.PushNotifier(pushnotifier_username, pushnotifier_password, pushnotifier_package_name, pushnotifier_api_token)
+# # init pushnotifier
+# pn = pn.PushNotifier(pushnotifier_username, pushnotifier_password, pushnotifier_package_name, pushnotifier_api_token)
 # create lab roster
 names = ['Peter','Ellen','Gordon','Fungi','Steffi','Mathieu','Cagatay','Simon','Amelie','Juli','Jing','Zeynab','Anna','Samuel']
 ids = ['Peter.Kirsch','Ellen.Schmucker','Gordon.Feld','Martin.Gerchen','Stefanie.Lis','Mathieu.Pinger','Cagatay.Guersoy','Simon.Kern','Amelie.Scupin','Juliane.Nagel','Jingying.Zhang','Zeynab.Razzaghpanah','Anna.Schulze','Samuel.Sander']
@@ -70,14 +73,13 @@ try:
          else:
               diff_day = datetime.strptime(
                   date, '%Y-%m-%d') - datetime.strptime(todays_date, '%Y-%m-%d')
-              print(diff_day.days)
               if diff_day.days <= 14 and diff_day.days > 0 and main_table['msg_sent'][i] != 2:
                   print('I have messaged',
-                        lab_roster[pres], 'and', lab_roster[mod])
+                        lab_roster[pres].lower(), 'and', lab_roster[mod].lower())
                   rocket.chat_post_message(
-                      msg_pres+date, channel='@'+lab_roster[pres])
+                      msg_pres+date, channel='@'+lab_roster[pres].lower())
                   rocket.chat_post_message(
-                      msg_mod+date, channel='@'+lab_roster[mod])
+                      msg_mod+date, channel='@'+lab_roster[mod].lower())
                   main_table['msg_sent'][i] = 1
      # time to save the table
      print(main_table)
