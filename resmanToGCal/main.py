@@ -5,24 +5,13 @@ from datetime import datetime, timezone, timedelta
 import pytz
 from tzlocal import get_localzone # $ pip install tzlocal
 import ssl
-from O365 import Account, MSGraphProtocol
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 # define main
 def main():
-    cal_id = '478715c1c8c16ec8fdffbb269c7b840d7cf381ef68d332bfc46985278ff66f54@group.calendar.google.com'
-    # initialise microsoft stuff
-    with open('./credentials.json', 'r') as f:
-        credentials_data = json.load(f)
-    micro_client_id = credentials_data['installed']['microsoft_client_id']
-    micro_secret_id = credentials_data['installed']['microsoft_secret_id']
-    micro_credentials = (micro_client_id, micro_secret_id)
-    protocol = MSGraphProtocol() 
-    #protocol = MSGraphProtocol(defualt_resource='<sharedcalendar@domain.com>') 
-    scopes = ['Calendars.Read.Shared']
-    account = Account(micro_credentials, protocol=protocol)
-    if account.authenticate(scopes=scopes):
-        print('MS Authenticated!')
+    with open('./user_creds.json', 'r') as f:
+        user_creds_data = json.load(f)
+    cal_id = user_creds_data['calendarID'][0]
     # run the gcal package
     try:
         gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # set the gcal
@@ -36,7 +25,8 @@ def main():
     resman_events = []
     for g_ev in gcal: # in a loop save every event to a list
         gcal_events.append(g_ev)
-    username = ['cagatay.guersoy', 'leonie.bonn'] # ZI username / make it GUI in the future
+    # username = ['cagatay.guersoy', 'leonie.bonn'] # ZI username / make it GUI in the future
+    username = user_creds_data['users']
     if len(username) > 1:
         for user in username:
             resman_event = cal_downloader(user) # download the calendar and get necessary info
