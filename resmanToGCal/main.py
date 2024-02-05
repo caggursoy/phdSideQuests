@@ -4,7 +4,6 @@ from gcsa.google_calendar import GoogleCalendar
 from gcsa.event import Event
 from datetime import datetime, timezone, timedelta
 import pytz
-import time
 from tzlocal import get_localzone # $ pip install tzlocal
 import ssl
 
@@ -52,13 +51,17 @@ def cal_downloader(username):
                 # print(desc, component.dtstart.valueRepr().replace(tzinfo=get_localzone()))
                 subj_no = desc[desc.find('Subject:')+len('Subject:')+1:] # extract participant no
                 if (datetime.today().replace(tzinfo=get_localzone()) - component.dtstart.valueRepr()).days < 0: # as Markus Sack said, Don't bother with the past. Look ahead!
+                    start = component.dtstart.valueRepr().replace(tzinfo=get_localzone())
+                    end = component.dtend.valueRepr().replace(tzinfo=get_localzone())
+                    start += start.utcoffset()
+                    end += end.utcoffset()
                     curr_ev = Event(
-                    subj_no,
-                    start = timedelta(seconds=-time.timezone)+component.dtstart.valueRepr().replace(tzinfo=get_localzone()),
-                    end = timedelta(seconds=-time.timezone)+component.dtend.valueRepr().replace(tzinfo=get_localzone()),
-                    location = component.location.valueRepr(),
-                    minutes_before_popup_reminder = 30,
-                    )
+                        subj_no,
+                        start = start,
+                        end = end,
+                        location = component.location.valueRepr(),
+                        minutes_before_popup_reminder = 30,
+                        )
                     resman_events.append(curr_ev) # append to event list too
     return resman_events # return the lists
 
