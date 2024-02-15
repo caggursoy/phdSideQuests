@@ -6,6 +6,7 @@ from datetime import datetime, timezone, timedelta
 import pytz
 from tzlocal import get_localzone # $ pip install tzlocal
 import ssl
+import socketserver
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 # define main
@@ -15,7 +16,10 @@ def main():
     cal_id = user_creds_data['calendarID'][0]
     # run the gcal package
     try:
-        gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # set the gcal
+        with socketserver.TCPServer(("localhost", 0), None) as s:
+            free_port = s.server_address[1]
+        gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json', 
+                              authentication_flow_port=free_port) # try to set the gcal agai
     except Exception as e:
         if os.path.isfile('token.pickle'):
             os.remove('token.pickle') # remove the pickle file
