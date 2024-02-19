@@ -35,8 +35,8 @@ rocket = RocketChat(user_id=rocket_user_id,
 # # init pushnotifier
 # pn = pn.PushNotifier(pushnotifier_username, pushnotifier_password, pushnotifier_package_name, pushnotifier_api_token)
 # create lab roster // must be updated for the new one
-names = ['Peter','Ellen','Gordon','Fungi','Steffi','Mathieu','Cagatay','Simon','Amelie','Juli','Jing','Josh','Samuel','Michaela','Lea','Nina']
-ids = ['Peter.Kirsch','Ellen.Schmucker','Gordon.Feld','Martin.Gerchen','Stefanie.Lis','Mathieu.Pinger','Cagatay.Guersoy','Simon.Kern','Amelie.Scupin','Juliane.Nagel','Jingying.Zhang','Joshua.Rocha','Samuel.Sander', 'Michaela.Kroth','Lea.Wazulin', 'Ninajudith.Kempf']
+names = ['Peter','Ellen','Gordon','Fungi','Steffi','Mathieu','Cagatay','Simon','Amelie','Juli','Jing','Josh','Samuel','Michaela','Lea','Nina','Daniela']
+ids = ['Peter.Kirsch','Ellen.Schmucker','Gordon.Feld','Martin.Gerchen','Stefanie.Lis','Mathieu.Pinger','Cagatay.Guersoy','Simon.Kern','Amelie.Scupin','Juliane.Nagel','Jingying.Zhang','Joshua.Rocha','Samuel.Sander', 'Michaela.Kroth','Lea.Wazulin', 'Ninajudith.Kempf', 'D.Ramirezbutavand']
 lab_roster = dict(zip(names, ids))
 # start the infinite loop now
 starttime = time.time()  # get current time
