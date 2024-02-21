@@ -67,7 +67,7 @@ if Path('current_usernames.json').is_file():
             4) Click on the little icon that shows two people with a little plus symbol and search for “ZI_ECRS”, then click on “Join”
             5) Wait for approval from one of the mailing list admins
     
-            (beep bop 🤖 this was posted by a bot)
+            (beep bop 🤖 this was posted by a [bot](https://github.com/caggursoy/phdSideQuests))
             '''
             # post the message as a private message
             rocket.chat_post_message(msg, channel='@'+diff_user, attachments=[{}])
