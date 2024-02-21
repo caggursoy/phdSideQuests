@@ -1,10 +1,28 @@
 # phdSideQuests
 ## A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
 
-### Chronicle
+## Explanations for folders:
 
-The first quest I have encountered is [animalNet](https://github.com/caggursoy/phdSideQuests/tree/master/animalNet) where I will try to downscale the ANN I have used in my MSc project into a more compact and less deep-layered one.
-The plan is to make it distinguish between animals.
-For now I only have following animals' images in dataset: [ "butterfly", "cat", "chicken", "cow", "dog", "elephant", "horse", "sheep", "spider", "squirrel"]
+### labmeeting-protocol
+An automated protocol poster for weekly KliPs department meetings.
+Takes the info from a .docx file Ellen generates every week, posts its location for Linux/Windows paths and converts the .docx to a .png and posts to the dedicated channel for ease of access
 
-The second quest is to adapt Ellis' fmriSim as per our fmri simulation needs. The repo is [here](https://github.com/caggursoy/phdSideQuests/tree/master/fmriSim).
+### labmeeting-rocketchat
+An automated reminder for weekly KliPs deparment meetings.
+Can do the following:
+- Reminds the persons who are scheduled to be the presenter/moderator in the next two meetings to present
+- Posts next two labmeetings presenter/moderator tuple to a dedicated channel
+- Every time there's an update in the KliPs labmeeting schedule repo, it reads the new labmeeting schedule and posts to the dedicated channel
+
+### pug23Cal
+Works only for PuG23 :)
+Reads the PuG23 program from the PDF and pushes the events into a GCal where you can subsribe and follow from your apps!
+
+### resmanToGCal
+Just what we need!
+We all know that Resman is awesome, but can only be accessed via ZI network.
+This automaton filters your Resman entries and copies them to a dedicated GCal, so you can check your Resman appointments from your apps!
+
+### rocket-greeter
+ZI-ECRs RocketChat channel greeter!
+This is the automaton that greets everyone who joins the ZI-ECRs main channel.
