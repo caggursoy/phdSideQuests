@@ -1,7 +1,37 @@
-# phdSideQuests
-## A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
+<br/>
+<p align="center">
+  <a href="https://github.com/caggursoy/phdSideQuests">
+    <img src="imgs/automaton.webp" alt="Logo" width="80" height="80">
+  </a>
 
-## Explanations for folders:
+  <h3 align="center">phdSideQuests</h3>
+
+  <p align="center">
+    A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
+    <br/>
+    <br/>
+    <a href="https://github.com/caggursoy/phdSideQuests"><strong>Explore the docs »</strong></a>
+    <br/>
+    <br/>
+    <a href="https://github.com/caggursoy/phdSideQuests">View Demo</a>
+    .
+    <a href="https://github.com/caggursoy/phdSideQuests/issues">Report Bug</a>
+    .
+    <a href="https://github.com/caggursoy/phdSideQuests/issues">Request Feature</a>
+  </p>
+</p>
+
+![Contributors](https://img.shields.io/github/contributors/caggursoy/phdSideQuests?color=dark-green) ![Forks](https://img.shields.io/github/forks/caggursoy/phdSideQuests?style=social) ![Stargazers](https://img.shields.io/github/stars/caggursoy/phdSideQuests?style=social) ![Issues](https://img.shields.io/github/issues/caggursoy/phdSideQuests) ![License](https://img.shields.io/github/license/caggursoy/phdSideQuests) 
+
+## Table Of Contents
+
+* [About the Project](#about-the-project)
+* [Built With](#built-with)
+* [Contributing](#contributing)
+* [License](#license)
+* [Authors](#authors)
+
+## About The Project
 
 ### labmeeting-protocol
 An automated protocol poster for weekly KliPs department meetings.
@@ -26,3 +56,31 @@ This automaton filters your Resman entries and copies them to a dedicated GCal, 
 ### rocket-greeter
 ZI-ECRs RocketChat channel greeter!
 This is the automaton that greets everyone who joins the ZI-ECRs main channel.
+
+## Built With
+
+Until now, I've developed everything with Python; and some wrappers
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+* If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/caggursoy/phdSideQuests/issues/new) to discuss it, or directly create a pull request after you edit the *README.md* file with necessary changes.
+* Please make sure you check your spelling and grammar.
+* Create individual PR for each suggestion.
+* Please also read through the [Code Of Conduct](https://github.com/caggursoy/phdSideQuests/blob/main/CODE_OF_CONDUCT.md) before posting your first idea as well.
+
+### Creating A Pull Request
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the unlicense. See [LICENSE](https://github.com/caggursoy/phdSideQuests/blob/main/LICENSE.md) for more information.
+
+## Authors
+
+* **Çağatay Gürsoy** - *Neurobiology PhD researcher* - [Çağatay Gürsoy](https://github.com/caggursoy) - **
