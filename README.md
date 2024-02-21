@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/caggursoy/phdSideQuests">
-    <img src="imgs/automaton.webp" alt="Logo" width="80" height="80">
+    <img src="imgs/automaton.webp" alt="Logo" width="400" height="400">
   </a>
 
   <h3 align="center">phdSideQuests</h3>
