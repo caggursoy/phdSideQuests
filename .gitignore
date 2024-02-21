@@ -242,3 +242,5 @@ createHandwrite/pretrained/*
 labmeeting-protocol/secrets.txt
 rocket-greeter/bot2.py
 rocket-greeter/secrets.txt
+*.ics
+labmeeting-rocketchat/crontab_backup
