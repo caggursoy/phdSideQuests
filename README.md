@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/caggursoy/phdSideQuests">
-    <img src="imgs/automaton.webp" alt="Logo" width="80" height="80">
+    <img src="imgs/automaton.webp" alt="Logo" width="400" height="400">
   </a>
 
   <h3 align="center">phdSideQuests</h3>
@@ -9,15 +9,10 @@
   <p align="center">
     A repository for side quests (i.e. projects) I've encountered (i.e. I plan to meddle with) during my PhD.
     <br/>
-    <br/>
-    <a href="https://github.com/caggursoy/phdSideQuests"><strong>Explore the docs »</strong></a>
-    <br/>
-    <br/>
-    <a href="https://github.com/caggursoy/phdSideQuests">View Demo</a>
-    .
     <a href="https://github.com/caggursoy/phdSideQuests/issues">Report Bug</a>
     .
     <a href="https://github.com/caggursoy/phdSideQuests/issues">Request Feature</a>
+    <br/>
   </p>
 </p>
 
