@@ -1,4 +1,5 @@
 import requests
+import traceback
 import vobject, os, json
 from gcsa.google_calendar import GoogleCalendar
 from gcsa.event import Event
@@ -7,23 +8,62 @@ import pytz
 from tzlocal import get_localzone # $ pip install tzlocal
 import ssl
 import socketserver
+from concurrent.futures import TimeoutError
+from pebble import concurrent
+from functools import wraps
+import telegram_send
+
+try:
+    from telebot.util import escape
+except Exception as e:
+    print(f"{e} cannot import library. install via pip install telebot telegram-send==0.34")
+
+@concurrent.process(timeout=30)
+def create_gcal(cal_id):
+    """open auth window, but set a timeout for headless"""
+    with socketserver.TCPServer(("localhost", 0), None) as s:
+        free_port = s.server_address[1]
+    gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json',
+                          authentication_flow_port=free_port) # set the gcal
+    return gcal
+
+def forward_exception(func):
+    """forward traceback of decorated functions via telegram
+    
+     for this to work, you need to install telegram-send==0.34
+     `pip install telegram-send==0.34 python-telegram-bot==13.5`
+     and then authenticate your telegram bot once by creating a bot
+     and running `telegram-send --configure` in the console.
+     """
+    @wraps(func)
+    def wrapped(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            tb = traceback.format_exc()
+            print("SENDING STACK VIA TELEGRAM")
+            msg = escape(f'ResManCal Error: ```\n{e}: {repr(e)}</code>\n<code>{tb}\n```')
+            print('---\n', tb, '\n---\nMSG:\n\n', msg, '\n---')
+            telegram_send.send(messages = [msg])
+            raise e
+    return wrapped
 
 # ssl._create_default_https_context = ssl._create_unverified_context
 # define main
+@forward_exception
 def main():
     with open('./user_creds.json', 'r') as f:
         user_creds_data = json.load(f)
     cal_id = user_creds_data['calendarID'][0]
     # run the gcal package
     try:
-        with socketserver.TCPServer(("localhost", 0), None) as s:
-            free_port = s.server_address[1]
-        gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json', 
-                              authentication_flow_port=free_port) # try to set the gcal agai
+        res = create_gcal(cal_id)
+        gcal = res.result()
     except Exception as e:
         if os.path.isfile('token.pickle'):
             os.remove('token.pickle') # remove the pickle file
-            gcal = GoogleCalendar(cal_id, credentials_path = './credentials.json') # try to set the gcal again
+            res = create_gcal(cal_id)
+            gcal = res.result()       
         else:
             print(e)
     gcal_events = [] # allocate empty list for gcal events
