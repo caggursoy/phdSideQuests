@@ -14,7 +14,7 @@
 ### pug23Cal
 
 Works only for PuG23 :)
-Reads the PuG23 program from the PDF and pushes the events into a GCal where you can subsribe and follow from your apps!
+Reads the PuG23 program from the PDF and pushes the events into a GCal where you can subscribe and follow from your apps!
 
 ## Built With
 
