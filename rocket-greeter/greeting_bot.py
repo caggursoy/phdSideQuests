@@ -1,6 +1,6 @@
 ### Imports ###
 from rocketchat_API.rocketchat import RocketChat
-from rocketchat.api import RocketChatAPI
+#from rocketchat.api import RocketChatAPI
 from pathlib import Path
 from inspect import currentframe, getframeinfo
 import json, emoji, hyperlink
