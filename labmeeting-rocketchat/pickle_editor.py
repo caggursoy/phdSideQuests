@@ -4,7 +4,7 @@ Written by ChatGPT entirely
 '''
 import tkinter as tk
 from tkinter import filedialog, messagebox
-import pickle
+import pandas as pd
 
 class PickleEditorApp:
     def __init__(self, master):
@@ -12,7 +12,7 @@ class PickleEditorApp:
         self.master.title("Pickle File Editor")
         self.master.geometry("1000x800")  # Set initial size of the window
 
-        self.text_area = tk.Text(master, height=40, width=100)
+        self.text_area = tk.Text(master, height=50, width=120)
         self.text_area.pack(pady=10)
 
         self.load_button = tk.Button(master, text="Load Pickle File", command=self.load_pickle)
@@ -26,10 +26,12 @@ class PickleEditorApp:
     def load_pickle(self):
         file_path = filedialog.askopenfilename(filetypes=[("Pickle Files", "*.pkl")])
         if file_path:
-            with open(file_path, 'rb') as file:
-                self.data = pickle.load(file)
+            try:
+                self.data = pd.read_pickle(file_path)
                 self.text_area.delete('1.0', tk.END)
-                self.text_area.insert(tk.END, self.data)
+                self.text_area.insert(tk.END, str(self.data))  # Display DataFrame as string
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to load pickle file: {e}")
 
     def save_pickle(self):
         if self.data is None:
@@ -38,9 +40,11 @@ class PickleEditorApp:
 
         file_path = filedialog.asksaveasfilename(defaultextension=".pkl", filetypes=[("Pickle Files", "*.pkl")])
         if file_path:
-            with open(file_path, 'wb') as file:
-                pickle.dump(self.text_area.get('1.0', tk.END), file)
-            messagebox.showinfo("Success", "Changes saved successfully.")
+            try:
+                self.data.to_pickle(file_path)
+                messagebox.showinfo("Success", "Changes saved successfully.")
+            except Exception as e:
+                messagebox.showerror("Error", f"Failed to save pickle file: {e}")
 
 def main():
     root = tk.Tk()
