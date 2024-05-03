@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from rocketchat_API.rocketchat import RocketChat
 from requests import sessions
 from inspect import currentframe, getframeinfo
-import os, time
+import os, time, traceback
 from pathlib import Path
 from io import StringIO
 # from pushnotifier import PushNotifier as pn
@@ -68,52 +68,54 @@ try:
         pickle_path = Path(__file__).parent.absolute() / 'main_table.pkl'
     else:
         pickle_path = 'main_table.pkl'
-        if os.path.exists(pickle_path):
-            main_table = pd.read_pickle(pickle_path)
+    if os.path.exists(pickle_path):
+        main_table = pd.read_pickle(pickle_path)
+    else:
+        beg = all_contents.find('## Current Schedule') + len('## Current Schedule')
+        end = all_contents.find('## Past Presentations')
+        # main_table = pd.read_html(all_contents[beg:end])[0]
+        # main_table = pd.read_table(StringIO(all_contents[beg:end]), sep="|", header=0, skipinitialspace=True).dropna(axis=1).iloc[1:]
+        main_table = pd.read_html(all_contents[beg:end])[0].dropna(axis=0)
+        main_table['msg_sent'] = [0]*len(main_table.index)
+        main_table['datetime'] = pd.to_datetime(main_table['Date'], format='%d.%m.%Y')
+        main_table.columns = main_table.columns.str.replace(' ', '')
+    msg_pres = 'Hi! This is a kind and automated reminder that you are next in line to present on '
+    msg_mod = 'Hi! This is a kind and automated reminder that you are next in line to moderate on '
+    # print the table on labmeeting schedule channel
+    # if only there is an update
+    # get last message on Labmeeting Schedule channel
+    lastm_text = dict(dict(rocket.rooms_info(room_id='MErEiyArfmSRjWZS3').json())['room'])['lastMessage']
+    if 'update schedule' in lastm_text['msg'].lower() or 'new schedule' in lastm_text['msg'].lower() or 'updated schedule' in lastm_text['msg'].lower() or 'merge past schedule' in lastm_text['msg'].lower() or 'update' in lastm_text['msg'].lower() or 'change' in lastm_text['msg'].lower():
+        print_table = main_table[['Date','Presenting','Moderator','Room']]
+        rocket.chat_post_message(f'```\n{print_table}\n```', channel='MErEiyArfmSRjWZS3')
+    # get todays date
+    todays_date = datetime.today().strftime('%d.%m.%Y')
+    # loop over dataframe / not a good practice but this is the easiest method for now
+    for i in range(0, len(main_table.index)):
+        date = main_table['Date'][i].replace(' ','')
+        pres = main_table['Presenting'][i].replace(' ','')
+        mod = main_table['Moderator'][i].replace(' ','')
+        if pres not in names:
+                continue
         else:
-             beg = all_contents.find('| date')
-             end = all_contents.find('## Past Presentations')
-             # main_table = pd.read_html(all_contents[beg:end])[0]
-             main_table = pd.read_table(StringIO(all_contents[beg:end]), sep="|", header=0, skipinitialspace=True).dropna(axis=1).iloc[1:]
-             main_table['msg_sent'] = [0]*len(main_table.index)
-             main_table.columns = main_table.columns.str.replace(' ', '')
-        msg_pres = 'Hi! This is a kind and automated reminder that you are next in line to present on '
-        msg_mod = 'Hi! This is a kind and automated reminder that you are next in line to moderate on '
-        # print the table on labmeeting schedule channel
-        # if only there is an update
-        # get last message on Labmeeting Schedule channel
-        lastm_text = dict(dict(rocket.rooms_info(room_id='MErEiyArfmSRjWZS3').json())['room'])['lastMessage']
-        if 'update schedule' in lastm_text['msg'].lower() or 'new schedule' in lastm_text['msg'].lower() or 'updated schedule' in lastm_text['msg'].lower() or 'merge past schedule' in lastm_text['msg'].lower() or 'Update' in lastm_text['msg'].lower():
-            print_table = main_table[['date', 'presenting', 'moderating']]
-            print(print_table)
-            # rocket.chat_post_message(f'```\n{print_table}\n```', channel='MErEiyArfmSRjWZS3')
-        # get todays date
-        todays_date = datetime.today().strftime('%Y-%m-%d')
-        # loop over dataframe / not a good practice but this is the easiest method for now
-        for i in range(1, len(main_table.index)+1):
-            date = main_table['date'][i].replace(' ','')
-            pres = main_table['presenting'][i].replace(' ','')
-            mod = main_table['moderating'][i].replace(' ','')
-            if pres not in names:
-                 continue
-            else:
-                 diff_day = datetime.strptime(
-                     date, '%Y-%m-%d') - datetime.strptime(todays_date, '%Y-%m-%d')
-                 if diff_day.days <= 14 and diff_day.days > 0 and main_table['msg_sent'][i] != 2:
-                    print('I have messaged',lab_roster[pres].lower(), 'and', lab_roster[mod].lower())
-                    # rocket.chat_post_message(msg_pres+date, channel='@'+lab_roster[pres].lower())
-                    # rocket.chat_post_message(msg_mod+date, channel='@'+lab_roster[mod].lower())
-                    main_table['msg_sent'][i] = 1
-        # time to save the table
-        main_table.to_pickle(Path(__file__).parent.absolute() / 'main_table.pkl')
-        # main_table.to_pickle('main_table.pkl')
-        
-        ## message next 2 entries every week!
-        next_pres = main_table[(main_table['date'] > (datetime.today()+ timedelta(days=1)).strftime('%Y-%m-%d')) & (main_table['date'] < (datetime.today() + timedelta(days=15)).strftime('%Y-%m-%d'))]
-        print_table_next = next_pres[['date', 'presenting', 'moderating']]
-        # rocket.chat_post_message(f'Presentation list for the next two meetings:\n\n'+f'```\n{print_table_next}\n```', channel='MErEiyArfmSRjWZS3')
-     
+            diff_day = datetime.strptime(date, '%d.%m.%Y') - datetime.strptime(todays_date, '%d.%m.%Y')
+            if diff_day.days <= 14 and diff_day.days > 0 and main_table['msg_sent'][i] != 2:
+                print('I have messaged',lab_roster[pres].lower(), 'and', lab_roster[mod].lower())
+                rocket.chat_post_message(msg_pres+date, channel='@'+lab_roster[pres].lower())
+                rocket.chat_post_message(msg_mod+date, channel='@'+lab_roster[mod].lower())
+                main_table['msg_sent'][i] = 1
+    # time to save the table
+    main_table.to_pickle(Path(__file__).parent.absolute() / 'main_table.pkl')
+    # main_table.to_pickle('main_table.pkl')
+    
+    ## message next 2 entries every week!
+    next_pres = main_table[(main_table['datetime'] > (datetime.today()+ timedelta(days=1)).strftime('%d.%m.%Y')) & (main_table['datetime'] < (datetime.today() + timedelta(days=15)).strftime('%d.%m.%Y'))]
+    print(next_pres)
+    print_table_next = next_pres[['Date','Presenting','Moderator','Room']]
+    rocket.chat_post_message(f'Presentation list for the next two meetings:\n\n'+f'```\n{print_table_next}\n```', channel='MErEiyArfmSRjWZS3')    
 except Exception as error:
     msg = 'There is a problem with the Labschedule code'
-    print("An exception occurred:", type(error).__name__) # An exception occurred: ZeroDivisionError
+    print("An exception occurred:", type(error).__name__, ) # An exception occurred: ZeroDivisionError
+    traceback.print_exc()  # This will print the traceback including the line where the error occurred
+
      # pn.send_notification(msg, url='', silent=False, devices=['XoJV'])
