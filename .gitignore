@@ -243,3 +243,4 @@ rocket-greeter/bot2.py
 rocket-greeter/secrets.txt
 *.ics
 labmeeting-rocketchat/crontab_backup
+labmeeting-rocketchat/main_table.csv
