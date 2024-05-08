@@ -65,11 +65,12 @@ starttime = time.time()  # get current time
 try:
     # define the table or just load it
     if '__file__' in globals():
-        pickle_path = Path(__file__).parent.absolute() / 'main_table.pkl'
+        pickle_path = Path(__file__).parent.absolute() / 'main_table.csv'
     else:
-        pickle_path = 'main_table.pkl'
+        pickle_path = 'main_table.csv'
     if os.path.exists(pickle_path):
-        main_table = pd.read_pickle(pickle_path)
+        main_table = pd.read_csv(pickle_path)
+        main_table['datetime'] = pd.to_datetime(main_table['Date'], format='%d.%m.%Y')
     else:
         beg = all_contents.find('## Current Schedule') + len('## Current Schedule')
         end = all_contents.find('## Past Presentations')
@@ -103,13 +104,16 @@ try:
                 print('I have messaged',lab_roster[pres].lower(), 'and', lab_roster[mod].lower())
                 rocket.chat_post_message(msg_pres+date, channel='@'+lab_roster[pres].lower())
                 rocket.chat_post_message(msg_mod+date, channel='@'+lab_roster[mod].lower())
-                main_table['msg_sent'][i] = 1
+                main_table['msg_sent'][i] += 1
     # time to save the table
-    main_table.to_pickle(Path(__file__).parent.absolute() / 'main_table.pkl')
-    # main_table.to_pickle('main_table.pkl')
+    if '__file__' in globals():
+        main_table.to_csv(Path(__file__).parent.absolute() / 'main_table.csv')
+    else:
+        main_table.to_csv('main_table.csv')
     
     ## message next 2 entries every week!
-    next_pres = main_table[(main_table['datetime'] > (datetime.today()+ timedelta(days=1)).strftime('%d.%m.%Y')) & (main_table['datetime'] < (datetime.today() + timedelta(days=15)).strftime('%d.%m.%Y'))]
+    # next_pres = main_table[(main_table['datetime'] > (datetime.today()+ timedelta(days=1)).strftime('%d.%m.%Y')) & (main_table['datetime'] < (datetime.today() + timedelta(days=15)).strftime('%d.%m.%Y'))]
+    next_pres = main_table[(main_table['datetime'] > (datetime.today()+ timedelta(days=1))) & (main_table['datetime'] < (datetime.today() + timedelta(days=15)))]
     print(next_pres)
     print_table_next = next_pres[['Date','Presenting','Moderator','Room']]
     rocket.chat_post_message(f'Presentation list for the next two meetings:\n\n'+f'```\n{print_table_next}\n```', channel='MErEiyArfmSRjWZS3')    

@@ -5,6 +5,9 @@ Written by ChatGPT entirely
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import pandas as pd
+import pickle
+import io
+
 
 class PickleEditorApp:
     def __init__(self, master):
@@ -22,14 +25,17 @@ class PickleEditorApp:
         self.save_button.pack()
 
         self.data = None
+        self.file_path = None
 
     def load_pickle(self):
         file_path = filedialog.askopenfilename(filetypes=[("Pickle Files", "*.pkl")])
         if file_path:
             try:
-                self.data = pd.read_pickle(file_path)
-                self.text_area.delete('1.0', tk.END)
-                self.text_area.insert(tk.END, str(self.data))  # Display DataFrame as string
+                self.file_path = file_path
+                with open(file_path, 'rb') as file:
+                    self.data = pickle.load(file)
+                    self.text_area.delete('1.0', tk.END)
+                    self.text_area.insert(tk.END, str(self.data))  # Display DataFrame as string
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to load pickle file: {e}")
 
@@ -38,13 +44,22 @@ class PickleEditorApp:
             messagebox.showerror("Error", "No data to save. Please load a pickle file first.")
             return
 
-        file_path = filedialog.asksaveasfilename(defaultextension=".pkl", filetypes=[("Pickle Files", "*.pkl")])
-        if file_path:
+        new_data = self.text_area.get('1.0', tk.END)
+        try:
+            self.data = pd.read_csv(io.StringIO(new_data), header=None, index_col=0)  # Update DataFrame with edited text
+        except Exception as e:
+            messagebox.showerror("Error", f"Invalid data format: {e}")
+            return
+
+        if self.file_path:
             try:
-                self.data.to_pickle(file_path)
+                with open(self.file_path, 'wb') as file:
+                    pickle.dump(self.data, file)
                 messagebox.showinfo("Success", "Changes saved successfully.")
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to save pickle file: {e}")
+        else:
+            messagebox.showerror("Error", "No file path available.")
 
 def main():
     root = tk.Tk()
