@@ -1,8 +1,14 @@
 ## certificates.py
 # A short way to add the ZI certificates to your system
 ###
-import certifi
-import urllib.request
+try:
+    import certifi, subprocess
+    import urllib.request
+except:
+    import subprocess, sys
+    subprocess.call([sys.executable, '-m', 'pip', '--trusted-host', 'pypi.python.org', 'install', 'certifi'])
+    import urllib.request
+    import certifi
 # get the main certificate location
 certs_loc = certifi.where()
 # get what's inside the certificate
