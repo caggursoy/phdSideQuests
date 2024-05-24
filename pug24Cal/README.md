@@ -56,7 +56,7 @@ If you want to personalise your own calendar by removing some of the sessions fr
 
 3. **Import the .ics File**:
    - In the `Import` section, click on `Select file from your computer`.
-   - Choose the `.ics` file you exported earlier.
+   - Choose the `.ics` file you downloaded earlier.
    - In the `Add to calendar` drop-down menu, select the new calendar you created in the previous step.
    - Click `Import`.
 
