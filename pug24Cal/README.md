@@ -28,14 +28,14 @@ If you want to personalise your own calendar by removing some of the sessions fr
 
 2. **Go to Settings**:
 
-   - Click on the gear icon in the top-right corner and select "Settings".
+   - Click on the gear icon in the top-right corner and select `Settings`.
 
 3. **Select Calendar to Export**:
 
-   - In the left sidebar, click on the name of the calendar you want to export under the "Settings for my calendars" section.
+   - In the left sidebar, click on `PuG24-Calendar` under the `Settings for my calendars` section.
 
 4. **Export Calendar**:
-   - Scroll down to the "Integrate calendar" section and click on "Export calendar".
+   - Click on `Export calendar` under the `Calendar settings` immedietaly below `Time zone` setting
    - This will download a ZIP file containing an `.ics` file of your calendar.
 
 ### Step 2: Create a New Calendar
@@ -45,27 +45,28 @@ If you want to personalise your own calendar by removing some of the sessions fr
    - If you're not already there, go back to [Google Calendar](https://calendar.google.com).
 
 2. **Create a New Calendar**:
-   - Click on the "+" icon next to "Other calendars" on the left sidebar.
-   - Select "Create new calendar".
-   - Fill in the details for your new calendar and click "Create calendar".
+   - Click on the `+` icon next to `Other calendars` on the left sidebar.
+   - Select `Create new calendar`.
+   - Fill in the details for your new calendar and click `Create calendar`.
 
 ### Step 3: Import the Calendar
 
 1. **Go to Settings**:
 
-   - Click on the gear icon in the top-right corner and select "Settings".
+   - Click on the gear icon in the top-right corner and select `Settings`.
 
 2. **Select Import & Export**:
 
-   - In the left sidebar, click on "Import & export".
+   - In the left sidebar, click on `Import & export`.
 
 3. **Import the .ics File**:
-   - In the "Import" section, click on "Select file from your computer".
+   - In the `Import` section, click on `Select file from your computer`.
    - Choose the `.ics` file you exported earlier.
-   - In the "Add to calendar" drop-down menu, select the new calendar you created.
-   - Click "Import".
+   - In the `Add to calendar` drop-down menu, select the new calendar you created in the previous step.
+   - Click `Import`.
 
 Your new calendar should now contain all the events from the original calendar.
+Now you can uncheck the original `PuG24-Calendar` from the `My calendars` panel and start editing your own instance.
 
 ## Built With
 
