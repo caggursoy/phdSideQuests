@@ -48,7 +48,7 @@ If you want to personalise your own calendar by removing some of the sessions fr
 
 1. **Go to Settings**:
 
-   - Click on the gear icon in the top-right corner and select `Settings`.
+   - Click on the gear icon in the top-right corner and select `Settings` if you're not already in `Settings`.
 
 2. **Select Import & Export**:
 
@@ -69,7 +69,7 @@ Until now, I've developed everything with Python; and some wrappers
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 - If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/caggursoy/phdSideQuests/issues/new) to discuss it, or directly create a pull request after you edit the _README.md_ file with necessary changes.
 - Please make sure you check your spelling and grammar.
