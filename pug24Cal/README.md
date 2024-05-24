@@ -16,6 +16,11 @@
 Works only for PuG24 :)
 Reads the PuG24 program from the PDF and pushes the events into a GCal where you can subscribe and follow from your apps!
 
+## Importing the original (read-only) calendar
+
+- Just click this link and it should be automatically added to your Google Calendar
+  - [Link](https://calendar.google.com/calendar/u/0?cid=Y2Q3YWY2OWZlYTA0ZTQwYWIxZThkYzI1MTMzNGEzODVmZGVhNGU5NzIzNGEyZWJhOWU4M2YzMzgzNDYzYzlhZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
+
 ## Duplicating and creating your own calendar
 
 If you want to personalise your own calendar by removing some of the sessions from the whole calendar, you can follow the steps below to duplicate the calendar and create your own
