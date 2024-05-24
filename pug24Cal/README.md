@@ -18,6 +18,8 @@ Reads the PuG24 program from the PDF and pushes the events into a GCal where you
 
 ## Importing the original (read-only) calendar
 
+### If you want to use the calendar without personalising (removing the parallel sessions that you might not attend) just use the link below
+
 - Just click this link and it should be automatically added to your Google Calendar
   - [Link](https://calendar.google.com/calendar/u/0?cid=Y2Q3YWY2OWZlYTA0ZTQwYWIxZThkYzI1MTMzNGEzODVmZGVhNGU5NzIzNGEyZWJhOWU4M2YzMzgzNDYzYzlhZUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
 
@@ -27,21 +29,9 @@ If you want to personalise your own calendar by removing some of the sessions fr
 
 ### Step 1: Export the Calendar
 
-1. **Open Google Calendar**:
+1. **Download the `.ics` file**
 
-   - Go to [Google Calendar](https://calendar.google.com).
-
-2. **Go to Settings**:
-
-   - Click on the gear icon in the top-right corner and select `Settings`.
-
-3. **Select Calendar to Export**:
-
-   - In the left sidebar, click on `PuG24-Calendar` under the `Settings for my calendars` section.
-
-4. **Export Calendar**:
-   - Click on `Export calendar` under the `Calendar settings` immedietaly below `Time zone` setting
-   - This will download a ZIP file containing an `.ics` file of your calendar.
+   - Go to [this link](https://drive.google.com/file/d/1ggru7cO9btZjx2IJ1HIF8NG_oFnsyEe2/view?usp=sharing) and download the `.ics` calendar file
 
 ### Step 2: Create a New Calendar
 
