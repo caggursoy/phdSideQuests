@@ -1,17 +1,22 @@
-import requests, json
+import requests, json, os
 import pandas as pd
 import matplotlib.pyplot as plt
 # import calendar
 from datetime import datetime, timedelta
 
 # Load secrets from the JSON file
-with open('secrets.json') as f:
-    secrets = json.load(f)
+# with open('secrets.json') as f:
+#     secrets = json.load(f)
 
 # Assign secrets to variables
-GITHUB_API_URL = secrets['GITHUB_API_URL']
-GITLAB_API_URL = secrets['GITLAB_API_URL']
-GITLAB_AUTH_TOKEN = secrets['GITLAB_AUTH_TOKEN']
+# GITHUB_API_URL = secrets['GITHUB_API_URL']
+# GITLAB_API_URL = secrets['GITLAB_API_URL']
+# GITLAB_AUTH_TOKEN = secrets['GITLAB_AUTH_TOKEN']
+
+# get them from the env variables
+GITHUB_API_URL = os.getenv('GITCONTRIB_GITHUB_API_URL')
+GITLAB_API_URL = os.getenv('GITCONTRIB_GITLAB_API_URL')
+GITLAB_AUTH_TOKEN = os.getenv('GITCONTRIB_GITLAB_AUTH_TOKEN')
 
 # Function to fetch GitHub contributions
 def fetch_github_contributions(username):
