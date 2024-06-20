@@ -3,7 +3,7 @@ name: Run Git contributions merger daily
 on:
   schedule:
     # Run at 18:00 UTC every day
-    - cron: '14 15 * * *'
+    - cron: '21 15 * * *'
 
 jobs:
   run-python-script:
@@ -24,5 +24,9 @@ jobs:
         pip install -r gitContrib/requirements.txt # for dependencies
 
     - name: Run Python script
+      env:
+        GITCONTRIB_GITHUB_API_URL: ${{ secrets.GITCONTRIB_GITHUB_API_URL }}
+        GITCONTRIB_GITLAB_API_URL: ${{ secrets.GITCONTRIB_GITLAB_API_URL }}
+        GITCONTRIB_GITLAB_AUTH_TOKEN: ${{ secrets.GITCONTRIB_GITLAB_AUTH_TOKEN }}
       run: |
         python gitContrib/main.py # path to the Python script
