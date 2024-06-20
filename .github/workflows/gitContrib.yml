@@ -3,7 +3,7 @@ name: Run Git contributions merger daily
 on:
   schedule:
     # Run at 18:00 UTC every day
-    - cron: '0 18 * * *'
+    - cron: '14 15 * * *'
 
 jobs:
   run-python-script:
