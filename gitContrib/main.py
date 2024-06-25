@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
 # Load secrets from the JSON file
-with open('secrets.json') as f:
+with open('/zi/home/cagatay.guersoy/Desktop/Cagatay-data/GitHub-repos/phdSideQuests/gitContrib/secrets.json') as f:
     secrets = json.load(f)
 
 # Assign secrets to variables
@@ -72,7 +72,7 @@ def generate_heatmap(contributions, image_path):
 
     # Save the figure
     plt.savefig(image_path)
-    plt.show()
+    # plt.show()
 
 
 # Fetch contributions
@@ -83,7 +83,7 @@ gitlab_contributions = fetch_gitlab_contributions('65')
 combined_contributions = combine_contributions(github_contributions, gitlab_contributions)
 
 # Generate heatmap and save as image
-generate_heatmap(combined_contributions, 'contributions_heatmap.png')
+generate_heatmap(combined_contributions, '/zi/home/cagatay.guersoy/Desktop/Cagatay-data/GitHub-repos/phdSideQuests/gitContrib/contributions_heatmap.png')
 
 # Create README.md file with the image
 readme_content = """
