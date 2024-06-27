@@ -3,6 +3,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 # import calendar
 from datetime import datetime, timedelta
+import pandas as pd
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 
 # Load secrets from the JSON file
 with open('/zi/home/cagatay.guersoy/Desktop/Cagatay-data/GitHub-repos/phdSideQuests/gitContrib/secrets.json') as f:
@@ -74,6 +78,59 @@ def generate_heatmap(contributions, image_path):
     plt.savefig(image_path)
     # plt.show()
 
+def generate_3d_heatmap(contributions, image_path):
+    # Generate the date range and initialize the DataFrame
+    dates = pd.date_range(start=min(contributions.keys()), end=max(contributions.keys()))
+    data = pd.DataFrame(index=dates)
+    data['count'] = 0
+
+    # Fill the DataFrame with contribution counts
+    for date, count in contributions.items():
+        data.loc[date, 'count'] = count
+
+    # Extract the day of the week and week of the year
+    data['weekday'] = data.index.weekday
+    data['week'] = data.index.to_period('W').strftime('%Y-%m-%d')
+
+    # Pivot the table to get the matrix format for heatmap
+    pivot_table = data.pivot(index='weekday', columns='week', values='count').fillna(0)
+
+    # Prepare data for 3D plot
+    X, Y = np.meshgrid(range(len(pivot_table.columns)), range(7))
+    Z = pivot_table.values
+
+    # Create the figure and 3D axis
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Plot the surface
+    surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, edgecolor='none')
+
+    # Customize the z axis
+    ax.set_zlim(0, np.max(Z))
+    ax.zaxis.set_major_locator(plt.MaxNLocator(5))
+    ax.zaxis.set_major_formatter('{x:.02f}')
+
+    # Add a color bar
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+
+    # Customize the axes
+    ax.set_xticks(range(len(pivot_table.columns)))
+    week_labels = [pd.to_datetime(date).strftime('%b') for date in pivot_table.columns]
+    ax.set_xticklabels(week_labels, rotation=90)
+    ax.set_yticks(range(7))
+    ax.set_yticklabels(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'])
+
+    # Labels and title
+    ax.set_xlabel('Weeks')
+    ax.set_ylabel('Days of the Week')
+    ax.set_zlabel('Contributions')
+    ax.set_title('3D Heatmap of Contributions Over Time')
+
+    # Save the figure
+    plt.savefig(image_path)
+    # plt.show()
+
 
 # Fetch contributions
 github_contributions = fetch_github_contributions('caggursoy')
@@ -84,6 +141,7 @@ combined_contributions = combine_contributions(github_contributions, gitlab_cont
 
 # Generate heatmap and save as image
 generate_heatmap(combined_contributions, '/zi/home/cagatay.guersoy/Desktop/Cagatay-data/GitHub-repos/phdSideQuests/gitContrib/contributions_heatmap.png')
+generate_3d_heatmap(combined_contributions, '/zi/home/cagatay.guersoy/Desktop/Cagatay-data/GitHub-repos/phdSideQuests/gitContrib/contributions_heatmap_3d.png')
 
 # Create README.md file with the image
 readme_content = """
