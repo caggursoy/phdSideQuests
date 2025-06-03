@@ -4,6 +4,7 @@
 try:
     import certifi, subprocess
     import urllib.request
+    from pathlib import Path
 except:
     try:
         import subprocess, sys
@@ -37,6 +38,7 @@ except:
     ##
     import urllib.request
     import certifi
+    from pathlib import Path
 # get the main certificate location
 certs_loc = certifi.where()
 # get what's inside the certificate
@@ -44,8 +46,8 @@ cert_main_file = open(certs_loc, "r")
 cert_main = cert_main_file.read()
 cert_main_file_write = open(certs_loc, "a")
 # download ZI certificates
-urllib.request.urlretrieve('http://wiki.zi.local/_media/proxy/ssl-deep-zi.cer', 'ssl-deep-zi.cer')
-urllib.request.urlretrieve('http://wiki.zi.local/ZI-ZICERT1-CA.crt', 'ZI-ZICERT1-CA.crt')
+urllib.request.urlretrieve('http://wiki.zi.local/_media/proxy/ssl-deep-zi.cer', str(Path.cwd() / 'ssl-deep-zi.cer'))
+urllib.request.urlretrieve('http://wiki.zi.local/ZI-ZICERT1-CA.crt', str(Path.cwd() / 'ZI-ZICERT1-CA.crt'))
 # now read the certificates
 zi_cert_names = ['ssl-deep-zi.cer', 'ZI-ZICERT1-CA.crt']
 for zi_cert in zi_cert_names:
@@ -62,5 +64,9 @@ for zi_cert in zi_cert_names:
 # close everything
 cert_main_file.close()
 cert_main_file_write.close()
+
+# now also configure conda with the file
+print('cert loc:', str(Path.cwd() / zi_cert_names[1]))
+subprocess.run(['conda', 'config', '--set', 'ssl_verify', str(Path.cwd() / zi_cert_names[1])], check=True)
 
 ##
